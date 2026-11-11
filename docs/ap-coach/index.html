@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>A&amp;P Coach</title>
+<meta name="description" content="A&amp;P Coach: Anatomy &amp; Physiology, one day at a time.">
+<meta name="apple-mobile-web-app-title" content="A&amp;P Coach">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#EEF2F6" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0F1528" media="(prefers-color-scheme: dark)">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F6; --surface:#FFFFFF; --ink:#18203A; --muted:#5B6683; --line:#D5DCE6;
+  --myelin:#0F7C7C; --myelin-soft:#D7EEEC; --signal:#E08A12; --signal-soft:#FCEBD2;
+  --bad:#C2413B; --bad-soft:#F8DEDC; --lock:#A9B3C4; --orange:#D74100;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
+  --bg:#0F1528; --surface:#18203A; --ink:#E7ECF6; --muted:#9AA5BF; --line:#2B3657;
+  --myelin:#3FBFB4; --myelin-soft:#173B42; --signal:#F2A73B; --signal-soft:#3D2E16;
+  --bad:#F07B72; --bad-soft:#40211F; --lock:#4A5574; --orange:#F76900; color-scheme:dark; }}
+:root[data-theme="dark"]{
+  --bg:#0F1528; --surface:#18203A; --ink:#E7ECF6; --muted:#9AA5BF; --line:#2B3657;
+  --myelin:#3FBFB4; --myelin-soft:#173B42; --signal:#F2A73B; --signal-soft:#3D2E16;
+  --bad:#F07B72; --bad-soft:#40211F; --lock:#4A5574; --orange:#F76900; color-scheme:dark; }
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font:17px/1.5 "Atkinson Hyperlegible",system-ui,-apple-system,"Segoe UI",Arial,sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:20px 18px 40px}
+h1,h2,.display{font-family:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;letter-spacing:-.01em;margin:0}
+h1{font-size:1.65rem;font-weight:800;line-height:1.15}
+h2{font-size:1.2rem;font-weight:600}
+p{margin:.4em 0}
+.muted{color:var(--muted)}
+.small{font-size:.88rem}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--signal);outline-offset:2px}
+.btn{display:block;width:100%;border:0;border-radius:14px;padding:15px 18px;font-weight:700;font-size:1.05rem;
+  background:var(--myelin);color:#fff}
+.btn:disabled{opacity:.45;cursor:default}
+.btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.row{display:flex;gap:10px}
+.row>*{flex:1}
+.link{background:none;border:0;padding:0;color:var(--myelin);text-decoration:underline;font-size:.92rem}
+input[type=text],textarea{width:100%;font:inherit;color:var(--ink);background:var(--surface);
+  border:1.5px solid var(--line);border-radius:12px;padding:12px 14px}
+textarea{min-height:110px;font-size:.9rem}
+.hidden{display:none!important}
+header.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:6px}
+.who{font-size:.92rem;color:var(--muted);white-space:nowrap}
+.streak{display:flex;gap:18px;margin:14px 0 4px}
+.streak b{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:1.6rem;display:block;line-height:1}
+.streak span{font-size:.85rem;color:var(--muted)}
+/* axon progress: the one bold element */
+.axon{margin:18px 0 6px;background:var(--surface);border-radius:18px;padding:14px 12px 10px;border:1px solid var(--line)}
+.axon svg{width:100%;height:auto;display:block}
+.axon .cap{font-size:.85rem;color:var(--muted);margin:6px 4px 0}
+.levels{list-style:none;padding:0;margin:14px 0 18px}
+.levels li{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:11px 2px;border-bottom:1px solid var(--line)}
+.levels li:last-child{border-bottom:0}
+.lvnum{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-weight:700;font-size:.85rem;
+  border:2px solid var(--lock);color:var(--muted)}
+.levels li.open .lvnum{border-color:var(--myelin);color:var(--myelin)}
+.levels li.done .lvnum{background:var(--signal);border-color:var(--signal);color:#fff}
+.levels li.locked{color:var(--muted)}
+.bar{height:6px;background:var(--line);border-radius:3px;overflow:hidden;margin-top:5px}
+.bar i{display:block;height:100%;background:var(--myelin);border-radius:3px}
+.pct{font-size:.85rem;color:var(--muted);text-align:right;min-width:44px}
+.links{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px}
+.brand{color:var(--orange)}
+.tagline{font-size:.95rem;color:var(--muted);margin:2px 0 0}
+.today{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.85rem;color:var(--muted);margin:2px 0 6px}
+.today b{color:var(--ink)}
+.dots{display:flex;gap:6px;margin:6px 0 18px}
+.dots i{width:28px;height:5px;border-radius:3px;background:var(--line)}
+.dots i.on{background:var(--orange)}
+.steps{margin:10px 0 0 0;padding-left:22px}
+.steps li{margin:8px 0}
+.note{background:var(--signal-soft);border-radius:12px;padding:12px 14px;margin-top:14px;font-size:.92rem}
+.credit{margin-top:10px}
+.credit a{color:var(--myelin);font-weight:700}
+.tracks{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:12px 0 2px}
+.trk{border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:9px 8px;text-align:left;display:flex;flex-direction:column;gap:1px}
+.trk b{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:600}
+.trk span{font-size:.75rem;color:var(--muted)}
+.trk.on{border-color:var(--myelin);background:var(--myelin-soft)}
+.lvact{font-size:.82rem;font-weight:700;border:1.5px solid var(--myelin);color:var(--myelin);background:transparent;border-radius:999px;padding:4px 12px;margin-top:6px}
+.lvact.test{border-color:var(--signal);color:var(--signal)}
+.topics{display:grid;gap:8px;margin:12px 0}
+.topic{text-align:left;border:1.5px solid var(--line);background:var(--surface);border-radius:12px;padding:11px 14px;display:flex;justify-content:space-between;gap:10px;align-items:center}
+.topic .n{flex:0 0 24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:.8rem;font-weight:700;border:1.5px solid var(--line);color:var(--muted)}
+.topic.on{border-color:var(--signal);background:var(--signal-soft)}
+.topic.on .n{background:var(--signal);border-color:var(--signal);color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-size:.82rem;background:var(--signal-soft);border-radius:999px;padding:3px 10px}
+/* session */
+.progress{display:flex;justify-content:space-between;font-size:.88rem;color:var(--muted);margin-bottom:8px}
+.qcard{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 16px}
+.tag{display:inline-block;font-size:.8rem;font-weight:700;padding:2px 10px;border-radius:999px;margin-bottom:10px;
+  background:var(--myelin-soft);color:var(--myelin)}
+.tag.whatif{background:var(--signal-soft);color:var(--signal)}
+.qtext{font-size:1.12rem;font-weight:700;margin:0 0 14px}
+.opts{display:grid;gap:10px}
+.opt{text-align:left;border:1.5px solid var(--line);background:var(--bg);border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start}
+.opt .n{flex:0 0 26px;height:26px;border-radius:50%;display:grid;place-items:center;font-size:.85rem;font-weight:700;
+  border:1.5px solid var(--line);color:var(--muted)}
+.opt.picked{border-color:var(--myelin)}
+.opt.picked .n{background:var(--myelin);border-color:var(--myelin);color:#fff}
+.opt.right{border-color:var(--myelin);background:var(--myelin-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt[disabled]{cursor:default}
+.mrow{display:grid;gap:6px;padding:10px 0;border-bottom:1px solid var(--line)}
+.mrow:last-child{border-bottom:0}
+.mrow b{font-size:.98rem}
+.mrow select{font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:9px 10px;width:100%}
+.mrow.right select{border-color:var(--myelin);background:var(--myelin-soft)}
+.mrow.wrong select{border-color:var(--bad);background:var(--bad-soft)}
+.mrow .fix{font-size:.85rem;color:var(--myelin)}
+.opt.check .n{border-radius:6px}
+.unit-h{list-style:none;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:600;font-size:.95rem;color:var(--muted);padding:14px 2px 2px!important;border-bottom:0!important;display:block!important}
+.feedback{margin-top:14px;padding:14px;border-radius:12px;background:var(--bg);border-left:5px solid var(--myelin)}
+.feedback.bad{border-left-color:var(--bad)}
+.feedback h2{font-size:1.05rem;margin-bottom:4px}
+.feedback ol{margin:6px 0 6px 20px;padding:0}
+.src{font-size:.82rem;color:var(--muted);margin-top:8px}
+.fb-actions{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+.mt{margin-top:14px}
+.big{font-family:"Bricolage Grotesque",system-ui,sans-serif;font-size:3rem;font-weight:800;line-height:1}
+.toast{background:var(--signal-soft);color:var(--ink);border-radius:12px;padding:12px 14px;margin:12px 0;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:.95rem}
+th,td{text-align:left;padding:9px 6px;border-bottom:1px solid var(--line)}
+th{font-weight:700;color:var(--muted);font-size:.85rem}
+td.num,th.num{text-align:right}
+footer{margin-top:28px;font-size:.78rem;color:var(--muted)}
+@media (prefers-reduced-motion:reduce){ .pulse{display:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- setup -->
+  <section id="v-setup" class="hidden">
+    <h1 class="brand">A&amp;P Coach</h1>
+    <p class="tagline">Anatomy &amp; Physiology, one day at a time.</p>
+    <p class="muted mt">Short daily practice, organized by lecture exam. Each exam track starts with the basics and builds level by level.</p>
+    <label for="nameIn" class="mt" style="display:block;font-weight:700">Your first name</label>
+    <input type="text" id="nameIn" maxlength="24" autocomplete="given-name">
+    <p class="small muted">Your progress stays on this device. Friends sharing a phone can each use their own name.</p>
+    <button class="btn mt" id="startName">Start</button>
+    <div id="existing" class="mt"></div>
+    <footer><p class="credit">Built by <a href="https://www.linkedin.com/in/ronjones4133" target="_blank" rel="noopener">Ron Jones</a></p><p>Not affiliated with Syracuse University.</p></footer>
+  </section>
+
+  <!-- guide -->
+  <section id="v-guide" class="hidden">
+    <div class="dots" id="gDots" aria-hidden="true"></div>
+    <div id="gBody"></div>
+    <div class="row mt"><button class="btn ghost" id="gBack">Back</button><button class="btn" id="gNext">Next →</button></div>
+    <p class="mt"><button class="link" id="gSkip">Skip the guide</button></p>
+  </section>
+
+  <!-- survey -->
+  <section id="v-survey" class="hidden">
+    <h1>Which topics give you the most trouble?</h1>
+    <p class="muted">Pick up to 3 units from A&amp;P I. Your answers decide which units get built next, and show up in group standings so friends can see shared trouble spots.</p>
+    <div class="topics" id="topicList"></div>
+    <label for="otherIn" style="display:block;font-weight:700">Something else? (optional)</label>
+    <input type="text" id="otherIn" maxlength="40">
+    <button class="btn mt" id="saveSurvey" disabled>Save</button>
+  </section>
+
+  <!-- placement intro -->
+  <section id="v-placeintro" class="hidden">
+    <h1 id="placeTitle">Quick check</h1>
+    <p class="muted" id="placeText"></p>
+    <button class="btn mt" id="startPlace">Start the check</button>
+    <button class="btn ghost mt" id="skipPlace">Skip and start at level 1</button>
+  </section>
+
+  <!-- home -->
+  <section id="v-home" class="hidden">
+    <header class="top"><h1 class="brand">A&amp;P Coach</h1><span class="who" id="who"></span></header>
+    <p class="tagline">Anatomy &amp; Physiology, one day at a time.</p>
+    <div class="tracks" id="tracks" role="group" aria-label="Exam track"></div>
+    <div class="streak">
+      <div><b id="stStreak">0</b><span>day streak</span></div>
+      <div><b id="stMastered">0</b><span>mastered</span></div>
+      <div><b id="stDue">0</b><span>due now</span></div>
+    </div>
+    <div class="today" id="todayLine"></div>
+    <div class="axon" aria-hidden="true"><svg id="axonSvg" viewBox="0 0 340 56"></svg>
+      <p class="cap" id="axonCap"></p></div>
+    <ul class="levels" id="levels"></ul>
+    <button class="btn" id="go">Start today’s session</button>
+    <div class="links">
+      <button class="link" id="toShare">Share my score</button>
+      <button class="link" id="toGroup">Group standings</button>
+      <button class="link" id="toFlags">Flagged questions</button>
+      <button class="link" id="replayGuide">Show the guide again</button>
+      <button class="link" id="redoSurvey">Change trouble topics</button>
+      <button class="link" id="switchUser">Switch name</button>
+    </div>
+    <footer><p>Questions are written independently of any course materials. Key facts were checked against NIH/NCBI StatPearls and standard anatomy references. Don’t add instructor slides, quiz, or exam questions here. Spot a mistake? Flag it.</p>
+      <p class="credit">Built by <a href="https://www.linkedin.com/in/ronjones4133" target="_blank" rel="noopener">Ron Jones</a></p><p>Not affiliated with Syracuse University.</p></footer>
+  </section>
+
+  <!-- session -->
+  <section id="v-session" class="hidden">
+    <div class="progress"><span id="pCount"></span><button class="link" id="quit">End session</button></div>
+    <div class="qcard" id="qcard"></div>
+  </section>
+
+  <!-- summary -->
+  <section id="v-summary" class="hidden">
+    <h1>Session done</h1>
+    <p class="big mt" id="sumScore"></p>
+    <p class="muted" id="sumLine"></p>
+    <div id="sumToast"></div>
+    <p id="sumStreak" class="muted"></p>
+    <p id="sumNext" class="muted"></p>
+    <button class="btn mt" id="sumHome">Back to home</button>
+  </section>
+
+  <!-- share -->
+  <section id="v-share" class="hidden">
+    <h1>Share my score</h1>
+    <p class="muted">Copy this code and paste it in your group chat. Friends paste it into Group standings.</p>
+    <textarea id="shareCode" readonly></textarea>
+    <div class="row mt"><button class="btn" id="copyShare">Copy code</button><button class="btn ghost" data-home>Back</button></div>
+    <p class="small muted" id="copyMsg"></p>
+  </section>
+
+  <!-- group -->
+  <section id="v-group" class="hidden">
+    <h1>Group standings</h1>
+    <p class="muted">Paste friends’ score codes below (one or many), then update.</p>
+    <textarea id="groupIn" placeholder="AP1-…"></textarea>
+    <div class="row mt"><button class="btn" id="addCodes">Update standings</button><button class="btn ghost" data-home>Back</button></div>
+    <p class="small muted" id="groupMsg"></p>
+    <div class="mt" id="groupTable"></div>
+  </section>
+
+  <!-- flags -->
+  <section id="v-flags" class="hidden">
+    <h1>Flagged questions</h1>
+    <p class="muted">Questions you marked as wrong or confusing. Copy the list and send it so they get fixed.</p>
+    <div id="flagList" class="mt"></div>
+    <div class="row mt"><button class="btn" id="copyFlags">Copy list</button><button class="btn ghost" data-home>Back</button></div>
+    <p class="small muted" id="flagMsg"></p>
+  </section>
+
+</div>
+<script>
+'use strict';
+// ---------- tracks (one per BIO 216 lecture exam) ----------
+const TRACKS = [
+  {n:1, name:'Exam 1', sub:'Cells and chemistry', levels:[
+    {n:1, u:'Introduction', t:'Body organization and terminology', d:'Levels of organization, directional terms, planes, cavities'},
+    {n:2, u:'Introduction', t:'Homeostasis', d:'Feedback loops, set points, negative vs. positive feedback'},
+    {n:3, u:'Chemistry', t:'Atoms, bonds, water, and pH', d:'Subatomic particles, bond types, acids, buffers'},
+    {n:4, u:'Chemistry', t:'Organic molecules and enzymes', d:'Carbohydrates, lipids, proteins, nucleic acids, ATP'},
+    {n:5, u:'Cells', t:'Plasma membrane and transport', d:'Diffusion, osmosis, tonicity, active transport'},
+    {n:6, u:'Cells', t:'Organelles', d:'What each organelle does and how proteins are secreted'},
+    {n:7, u:'Cells', t:'Protein synthesis and the cell cycle', d:'Transcription, translation, mitosis'}]},
+  {n:2, name:'Exam 2', sub:'Skin, bone, and muscle', levels:[
+    {n:1, u:'Integumentary system', t:'The epidermis', d:'Layers, cell types, skin color'},
+    {n:2, u:'Integumentary system', t:'Dermis, glands, and skin functions', d:'Dermis, hypodermis, glands, burns'},
+    {n:3, u:'Bone', t:'Cartilage and bone tissue', d:'Cartilage types, bone cells, osteons'},
+    {n:4, u:'Bone', t:'Bone growth, remodeling, and repair', d:'Ossification, growth plate, calcium hormones, fractures'},
+    {n:5, u:'Skeleton', t:'Skeletal anatomy', d:'Axial vs. appendicular, vertebrae, major bones'},
+    {n:6, u:'Joints', t:'Joints and movements', d:'Joint classes, synovial types, movement terms'},
+    {n:7, u:'Muscle', t:'Muscle tissue structure', d:'Muscle types, sarcomere, filaments'},
+    {n:8, u:'Muscle', t:'Muscle contraction and energy', d:'Excitation-contraction, cross-bridges, ATP sources'}]},
+  {n:3, name:'Exam 3', sub:'Nervous system', levels:[
+    {n:1, u:'Nervous tissue', t:'The basics', d:'How the nervous system is organized'},
+    {n:2, u:'Nervous tissue', t:'Neurons and glia', d:'Parts of a neuron and its support cells'},
+    {n:3, u:'Nervous tissue', t:'Resting potential', d:'Ions, the pump, and membrane voltage'},
+    {n:4, u:'Nervous tissue', t:'The action potential', d:'Threshold, phases, and conduction'},
+    {n:5, u:'Nervous tissue', t:'The synapse', d:'How one neuron signals the next, and neural circuits'},
+    {n:6, u:'Spinal cord', t:'Spinal cord and reflexes', d:'Cord anatomy, spinal nerves, reflex arcs'},
+    {n:7, u:'Brain', t:'Brain and cranial nerves', d:'Brain regions, cortex areas, meninges, cranial nerves'},
+    {n:8, u:'Integration', t:'Sensory and motor pathways', d:'Tracts, crossing over, motor control'},
+    {n:9, u:'Special senses', t:'Smell, taste, and vision', d:'Chemical senses and the eye'},
+    {n:10, u:'Special senses', t:'Hearing and balance', d:'Ear anatomy, sound, equilibrium'},
+    {n:11, u:'Autonomic nervous system', t:'Autonomic nervous system', d:'Sympathetic vs. parasympathetic, neurotransmitters'}]}
+];
+// type: mc | whatif (a = index) · multi (a = array of indexes) · order (items in correct order) · match (pairs [left,right]) · type (ans = accepted answers)
+// id prefix sets the track: A = Exam 1, B = Exam 2, L = Exam 3
+const Q = [
+// Level 1
+{id:'L1-01',lv:1,type:'mc',q:'The nervous system’s two major anatomical divisions are:',opts:['Central and peripheral nervous systems','Somatic and autonomic nervous systems','Sympathetic and parasympathetic divisions','Sensory and motor pathways'],a:0,ex:'Anatomically it splits into the central nervous system (brain and spinal cord) and the peripheral nervous system (everything outside them). Somatic vs. autonomic is a functional split, not an anatomical one.'},
+{id:'L1-02',lv:1,type:'mc',q:'The central nervous system (CNS) consists of:',opts:['The brain and spinal cord','The brain and cranial nerves','The spinal cord and spinal nerves','The brain only'],a:0,ex:'CNS = brain + spinal cord. Cranial and spinal nerves belong to the peripheral nervous system.'},
+{id:'L1-03',lv:1,type:'mc',q:'Which structures make up the peripheral nervous system (PNS)?',opts:['Nerves and ganglia','The brain and spinal cord','Tracts and nuclei','Gray and white matter'],a:0,ex:'The PNS is nerves and ganglia outside the brain and spinal cord. Tracts and nuclei are the CNS versions of those structures.'},
+{id:'L1-04',lv:1,type:'mc',q:'The cell that carries electrical signals in nervous tissue is the:',opts:['Neuron','Astrocyte','Schwann cell','Microglial cell'],a:0,ex:'Neurons generate and carry electrical signals. The other three are glial (support) cells.'},
+{id:'L1-05',lv:1,type:'mc',q:'The supporting cells of nervous tissue are called:',opts:['Glial cells (neuroglia)','Neurons','Fibroblasts','Myocytes'],a:0,ex:'Glial cells, or neuroglia, support, protect, insulate, and maintain the environment around neurons.'},
+{id:'L1-06',lv:1,type:'mc',q:'A bundle of axons in the PNS is a nerve. A bundle of axons in the CNS is called a:',opts:['Tract','Nerve','Ganglion','Nucleus'],a:0,ex:'Same structure, different name by location: nerve in the PNS, tract in the CNS.'},
+{id:'L1-07',lv:1,type:'mc',q:'A cluster of neuron cell bodies in the PNS is called a:',opts:['Ganglion','Nucleus','Tract','Nerve'],a:0,ex:'Cell-body clusters are ganglia in the PNS and nuclei in the CNS.'},
+{id:'L1-08',lv:1,type:'mc',q:'White matter looks white because it is mostly:',opts:['Myelinated axons','Neuron cell bodies','Blood vessels','Cerebrospinal fluid'],a:0,ex:'Myelin is lipid-rich and looks white. Gray matter is mostly cell bodies and dendrites.'},
+{id:'L1-09',lv:1,type:'mc',q:'Sensory (afferent) neurons carry signals:',opts:['Toward the CNS','Away from the CNS','Only within the brain','Only to glands'],a:0,ex:'Afferent = arriving at the CNS. Sensory information travels in toward the brain and spinal cord.'},
+{id:'L1-10',lv:1,type:'mc',q:'Motor (efferent) neurons carry signals:',opts:['Away from the CNS to muscles and glands','Toward the CNS','Between two sensory receptors','Only within the spinal cord'],a:0,ex:'Efferent = exiting the CNS, out to effectors (muscles and glands).'},
+{id:'L1-11',lv:1,type:'mc',q:'The somatic nervous system controls:',opts:['Skeletal muscle','Cardiac muscle','Smooth muscle in organs','Glands'],a:0,ex:'Somatic = conscious perception and voluntary control of skeletal muscle.'},
+{id:'L1-12',lv:1,type:'mc',q:'The autonomic nervous system controls:',opts:['Cardiac muscle, smooth muscle, and glands','Skeletal muscle only','Conscious sensation only','Bone growth'],a:0,ex:'Autonomic = involuntary control of the heart, smooth muscle, and glands.'},
+{id:'L1-13',lv:1,type:'order',q:'Put the nervous system’s three basic functions in order:',items:['Sensation: detect a stimulus','Integration: process the information','Response: produce an action'],ex:'Detect, process, respond. Example: feel a hot pan, recognize it’s hot, pull your hand away.'},
+{id:'L1-14',lv:1,type:'mc',q:'Which of these is an effector?',opts:['A gland that secretes in response to a nerve signal','A sensory receptor in the skin','A tract in the spinal cord','A dendrite'],a:0,ex:'Effectors carry out the response. In the nervous system that means muscles and glands.'},
+// Level 2
+{id:'L2-01',lv:2,type:'mc',q:'Which part of a neuron mainly receives incoming signals?',opts:['Dendrites','Axon terminals','Myelin sheath','Nodes of Ranvier'],a:0,ex:'Dendrites are the branching input side. The axon is the output side.'},
+{id:'L2-02',lv:2,type:'mc',q:'The neuron’s cell body is also called the:',opts:['Soma','Axon hillock','Synapse','Neurilemma'],a:0,ex:'Soma = cell body, containing the nucleus and most organelles.'},
+{id:'L2-03',lv:2,type:'mc',q:'The axon hillock is:',opts:['Where the axon leaves the cell body','The tip of a dendrite','A gap in the myelin','A type of glial cell'],a:0,ex:'The hillock is the tapered region where the axon begins. The initial segment just past it is usually where action potentials start.'},
+{id:'L2-04',lv:2,type:'mc',q:'Neurotransmitter is released from the:',opts:['Axon terminals','Dendrites','Nucleus of the soma','Nodes of Ranvier'],a:0,ex:'Axon terminals hold synaptic vesicles filled with neurotransmitter.'},
+{id:'L2-05',lv:2,type:'mc',q:'The main job of myelin is to:',opts:['Insulate the axon and speed up signal conduction','Produce neurotransmitter','Store glucose for the neuron','Form the blood-brain barrier'],a:0,ex:'Myelin insulates the axon so the signal can jump between gaps, which is much faster.'},
+{id:'L2-06',lv:2,type:'mc',q:'The gaps between myelin segments are called:',opts:['Nodes of Ranvier','Synaptic clefts','Axon hillocks','Ganglia'],a:0,ex:'Nodes of Ranvier are the bare gaps. The action potential is regenerated at each node.'},
+{id:'L2-07',lv:2,type:'mc',q:'Which glial cell makes myelin in the CNS?',opts:['Oligodendrocyte','Schwann cell','Astrocyte','Microglial cell'],a:0,ex:'Oligodendrocytes myelinate in the CNS, and one cell can wrap segments of several axons. Memory trick: O for “one cell, many axons.”'},
+{id:'L2-08',lv:2,type:'mc',q:'Which glial cell makes myelin in the PNS?',opts:['Schwann cell','Oligodendrocyte','Ependymal cell','Satellite cell'],a:0,ex:'Schwann cells myelinate in the PNS. Each one wraps a single segment of a single axon.'},
+{id:'L2-09',lv:2,type:'mc',q:'Which glial cell helps form the blood-brain barrier and regulates the fluid around neurons?',opts:['Astrocyte','Microglial cell','Schwann cell','Ependymal cell'],a:0,ex:'Astrocytes are star-shaped CNS glia that contact blood vessels, contribute to the blood-brain barrier, and keep the extracellular environment stable.'},
+{id:'L2-10',lv:2,type:'mc',q:'Which glial cell acts as the CNS’s immune defense, engulfing debris and pathogens?',opts:['Microglial cell','Astrocyte','Oligodendrocyte','Satellite cell'],a:0,ex:'Microglia are the phagocytes of the CNS.'},
+{id:'L2-11',lv:2,type:'mc',q:'Ependymal cells:',opts:['Line the brain’s ventricles and help produce cerebrospinal fluid','Myelinate PNS axons','Surround cell bodies in ganglia','Release neurotransmitter'],a:0,ex:'Ependymal cells line the ventricles and central canal and help produce cerebrospinal fluid.'},
+{id:'L2-12',lv:2,type:'mc',q:'Satellite cells are found:',opts:['Around neuron cell bodies in PNS ganglia','Lining the brain’s ventricles','Wrapped around CNS axons','Inside the synaptic cleft'],a:0,ex:'Satellite cells surround and support cell bodies in ganglia. They are the PNS counterpart to astrocytes.'},
+{id:'L2-13',lv:2,type:'mc',q:'The most common neuron shape in the CNS, with one axon and many dendrites, is:',opts:['Multipolar','Bipolar','Unipolar','Anaxonic'],a:0,ex:'Multipolar neurons (many processes) include motor neurons and most CNS interneurons.'},
+{id:'L2-14',lv:2,type:'mc',q:'Most sensory neurons are structurally:',opts:['Unipolar','Multipolar','Bipolar','Anaxonic'],a:0,ex:'Most sensory neurons are unipolar: one process that splits into two branches. Bipolar neurons are found in special places like the retina and the olfactory epithelium.'},
+// Level 3
+{id:'L3-01',lv:3,type:'mc',q:'A typical neuron’s resting membrane potential is about:',opts:['−70 mV','0 mV','+30 mV','−55 mV'],a:0,ex:'Rest ≈ −70 mV. Threshold ≈ −55 mV. Action potential peak ≈ +30 mV. These three numbers come up constantly.'},
+{id:'L3-02',lv:3,type:'mc',q:'At rest, the inside of a neuron is ___ compared with the outside.',opts:['Negative','Positive','Neutral','Exactly equal'],a:0,ex:'The inside is negative relative to the outside, which is why resting potential is a negative number.'},
+{id:'L3-03',lv:3,type:'mc',q:'Which ion is more concentrated inside a resting neuron?',opts:['K⁺ (potassium)','Na⁺ (sodium)','Cl⁻ (chloride)','Ca²⁺ (calcium)'],a:0,ex:'K⁺ is high inside. Na⁺, Cl⁻, and Ca²⁺ are all higher outside. Memory trick: “potassium stays in the house.”'},
+{id:'L3-04',lv:3,type:'mc',q:'Which ion is more concentrated outside a resting neuron?',opts:['Na⁺ (sodium)','K⁺ (potassium)','Large negatively charged proteins'],a:0,ex:'Na⁺ is high outside. Large negative proteins are trapped inside the cell.'},
+{id:'L3-05',lv:3,type:'mc',q:'Each cycle of the Na⁺/K⁺ pump moves:',opts:['3 Na⁺ out and 2 K⁺ in, using ATP','2 Na⁺ out and 3 K⁺ in, using ATP','3 Na⁺ in and 2 K⁺ out','1 Na⁺ out and 1 K⁺ in, with no energy'],a:0,ex:'3 sodium out, 2 potassium in, 1 ATP. It maintains the gradients the neuron depends on.'},
+{id:'L3-06',lv:3,type:'mc',q:'At rest, the neuron’s membrane is most permeable to:',opts:['K⁺','Na⁺','Ca²⁺','Large proteins'],a:0,ex:'There are many more K⁺ leak channels than Na⁺ leak channels. K⁺ leaking out is the main reason the inside is negative.'},
+{id:'L3-07',lv:3,type:'mc',q:'Depolarization means the membrane potential:',opts:['Becomes less negative (moves toward zero)','Becomes more negative','Stays at −70 mV','Reverses permanently'],a:0,ex:'Depolarize = less polarized = closer to zero, for example −70 to −60 mV.'},
+{id:'L3-08',lv:3,type:'mc',q:'Hyperpolarization means the membrane potential becomes:',opts:['More negative than resting','Less negative than resting','Exactly zero','Higher than threshold'],a:0,ex:'Hyper = more. More polarized means more negative, for example −70 to −80 mV.'},
+{id:'L3-09',lv:3,type:'mc',q:'Graded potentials:',opts:['Vary in size with stimulus strength and fade with distance','Are always the same size','Travel the full length of the axon unchanged','Happen only at nodes of Ranvier'],a:0,ex:'Graded potentials are local and proportional to the stimulus, and they weaken as they spread. Action potentials are the opposite: all-or-none and they don’t fade.'},
+{id:'L3-10',lv:3,type:'mc',q:'A channel that opens when a neurotransmitter binds to it is:',opts:['Ligand-gated','Voltage-gated','Mechanically gated','A leak channel'],a:0,ex:'Ligand-gated opens when a chemical binds. Voltage-gated responds to voltage changes. Mechanically gated responds to physical deformation. Leak channels are always open.'},
+{id:'L3-11',lv:3,type:'whatif',q:'What if the Na⁺/K⁺ pump were blocked for a long time?',opts:['The ion gradients would run down, and the neuron would gradually lose its ability to fire','The resting potential would become much more negative','Nothing would change, because leak channels keep the gradients','The neuron would fire faster and faster indefinitely'],a:0,ex:'Leak channels let ions slowly move down their gradients. The pump restores them. Without the pump the gradients fade, the membrane drifts toward zero, and the neuron eventually can’t fire.'},
+{id:'L3-12',lv:3,type:'whatif',q:'What if K⁺ levels outside the cell rise well above normal?',opts:['The resting potential becomes less negative (depolarized)','The resting potential becomes more negative','The resting potential doesn’t change','The resting potential jumps to +30 mV'],a:0,ex:'With more K⁺ outside, the K⁺ gradient is smaller, so less K⁺ leaks out and the inside stays less negative.'},
+// Level 4
+{id:'L4-01',lv:4,type:'mc',q:'The threshold for firing an action potential is about:',opts:['−55 mV','−70 mV','+30 mV','0 mV'],a:0,ex:'Once the membrane depolarizes to about −55 mV, voltage-gated Na⁺ channels open and the action potential fires.'},
+{id:'L4-02',lv:4,type:'mc',q:'The rapid depolarization during an action potential is caused by:',opts:['Na⁺ rushing in through voltage-gated Na⁺ channels','K⁺ rushing out through voltage-gated K⁺ channels','Cl⁻ entering the cell','The Na⁺/K⁺ pump speeding up'],a:0,ex:'Up = sodium in. Positive charge rushing in makes the inside positive.'},
+{id:'L4-03',lv:4,type:'mc',q:'Repolarization is caused by:',opts:['K⁺ flowing out through voltage-gated K⁺ channels as Na⁺ channels inactivate','Na⁺ flowing in','Ca²⁺ flowing in','The Na⁺/K⁺ pump alone'],a:0,ex:'Down = potassium out. Positive charge leaving brings the inside back toward negative.'},
+{id:'L4-04',lv:4,type:'mc',q:'The brief hyperpolarization (undershoot) after an action potential happens because:',opts:['Voltage-gated K⁺ channels are slow to close','Na⁺ channels reopen','The Na⁺/K⁺ pump stops','Cl⁻ leaves the cell'],a:0,ex:'K⁺ keeps leaving a little too long, so the membrane briefly dips below −70 mV.'},
+{id:'L4-05',lv:4,type:'mc',q:'“All-or-none” means:',opts:['Once threshold is reached, the action potential fires at full size no matter how strong the stimulus','Stronger stimuli produce bigger action potentials','Every neuron in the body fires at once','Action potentials happen only in myelinated axons'],a:0,ex:'Below threshold, nothing fires. At or above threshold, the full action potential fires. There is no half-size action potential.'},
+{id:'L4-06',lv:4,type:'mc',q:'During the absolute refractory period:',opts:['No new action potential can fire, because Na⁺ channels are inactivated','A stronger-than-normal stimulus can fire one','The neuron is at rest','The Na⁺/K⁺ pump reverses'],a:0,ex:'Inactivated Na⁺ channels can’t reopen until they reset, so no stimulus of any strength can fire a second action potential.'},
+{id:'L4-07',lv:4,type:'mc',q:'During the relative refractory period:',opts:['A stronger-than-normal stimulus can trigger an action potential','No action potential is possible','Any stimulus triggers an action potential','The neuron can’t repolarize'],a:0,ex:'Some Na⁺ channels have reset, but the membrane is hyperpolarized, so it takes a bigger push to reach threshold.'},
+{id:'L4-08',lv:4,type:'mc',q:'Since action potentials are all-or-none, a stronger stimulus is signaled by:',opts:['A higher frequency of action potentials','Bigger action potentials','Slower action potentials','Action potentials traveling backward'],a:0,ex:'Strength is coded by rate: more action potentials per second, not bigger ones.'},
+{id:'L4-09',lv:4,type:'mc',q:'Saltatory conduction is:',opts:['The action potential jumping from node to node along a myelinated axon','The action potential crossing a synapse','Slow spread along an unmyelinated axon','Conduction backward toward the soma'],a:0,ex:'From the Latin “saltare,” to jump. The signal regenerates only at the nodes of Ranvier, which is much faster.'},
+{id:'L4-10',lv:4,type:'mc',q:'Which axon conducts action potentials fastest?',opts:['Large diameter, myelinated','Small diameter, unmyelinated','Large diameter, unmyelinated','Small diameter, myelinated'],a:0,ex:'Both a larger diameter and myelin increase speed, so the combination of both is fastest.'},
+{id:'L4-11',lv:4,type:'order',q:'Put the action potential in order:',items:['A stimulus brings the membrane to threshold','Voltage-gated Na⁺ channels open and Na⁺ rushes in','The membrane peaks near +30 mV and Na⁺ channels inactivate','Voltage-gated K⁺ channels open and K⁺ flows out','The membrane briefly hyperpolarizes','The membrane returns to resting potential'],ex:'Threshold → Na⁺ in (up) → peak → K⁺ out (down) → undershoot → rest.'},
+{id:'L4-12',lv:4,type:'whatif',q:'What if a local anesthetic like lidocaine blocks voltage-gated Na⁺ channels in a pain-sensing neuron?',opts:['No action potentials can fire, so the pain signal never reaches the brain','The action potentials get bigger','The action potentials travel faster','The neuron fires continuously'],a:0,ex:'No voltage-gated Na⁺ channels means no depolarization phase, which means no action potential. That’s how numbing works.'},
+{id:'L4-13',lv:4,type:'whatif',q:'What if myelin is damaged, as in multiple sclerosis?',opts:['Conduction slows down or fails along the affected axons','Conduction speeds up','Conduction is unchanged','Signals travel backward'],a:0,ex:'Without insulation, current leaks out between nodes, so the signal slows or fails to reach the next node.'},
+{id:'L4-14',lv:4,type:'mc',q:'Why does an action potential travel in only one direction along the axon?',opts:['The membrane just behind it is refractory','Myelin blocks backward flow','Na⁺ can only flow one way through the axon','Dendrites absorb the backward signal'],a:0,ex:'The patch it just left has inactivated Na⁺ channels, so the signal can only move forward into fresh membrane.'},
+{id:'L4-15',lv:4,type:'mc',q:'At its peak, the membrane potential during an action potential reaches about:',opts:['+30 mV','−70 mV','−55 mV','+100 mV'],a:0,ex:'The inside briefly becomes positive, about +30 mV.'},
+// Level 5
+{id:'L5-01',lv:5,type:'mc',q:'At a chemical synapse, the signal crosses the gap as:',opts:['Neurotransmitter diffusing across the synaptic cleft','Electrical current through gap junctions','Ions flowing through myelin','A hormone carried in the blood'],a:0,ex:'Chemical synapse: electrical signal → chemical messenger → electrical signal on the other side.'},
+{id:'L5-02',lv:5,type:'mc',q:'When an action potential reaches the axon terminal, which channels open?',opts:['Voltage-gated Ca²⁺ channels','Ligand-gated Na⁺ channels','K⁺ leak channels','Cl⁻ channels'],a:0,ex:'Depolarization of the terminal opens voltage-gated calcium channels.'},
+{id:'L5-03',lv:5,type:'mc',q:'Ca²⁺ entering the axon terminal triggers:',opts:['Synaptic vesicles to fuse with the membrane and release neurotransmitter','Myelin formation','Repolarization of the terminal','The Na⁺/K⁺ pump to shut down'],a:0,ex:'Calcium is the trigger for exocytosis. No calcium, no release.'},
+{id:'L5-04',lv:5,type:'order',q:'Put chemical synaptic transmission in order:',items:['An action potential arrives at the axon terminal','Voltage-gated Ca²⁺ channels open and Ca²⁺ enters','Synaptic vesicles release neurotransmitter by exocytosis','Neurotransmitter diffuses across the cleft and binds receptors','Ion channels on the postsynaptic cell open and its membrane potential changes','Neurotransmitter is removed from the cleft'],ex:'Arrive → calcium in → release → bind → postsynaptic response → clean up.'},
+{id:'L5-05',lv:5,type:'mc',q:'An excitatory postsynaptic potential (EPSP):',opts:['Depolarizes the postsynaptic membrane, moving it toward threshold','Hyperpolarizes the postsynaptic membrane','Is a full action potential','Happens only in muscle cells'],a:0,ex:'Excitatory = depolarizing = more likely to fire. An EPSP is a graded potential, not an action potential.'},
+{id:'L5-06',lv:5,type:'mc',q:'An inhibitory postsynaptic potential (IPSP):',opts:['Makes the postsynaptic neuron less likely to fire, usually by hyperpolarizing it','Makes the postsynaptic neuron more likely to fire','Is a full action potential','Releases calcium into the cleft'],a:0,ex:'Inhibitory = pushes the membrane away from threshold.'},
+{id:'L5-07',lv:5,type:'mc',q:'Acetylcholine in the synaptic cleft is broken down by:',opts:['Acetylcholinesterase','The Na⁺/K⁺ pump','Myelin','Calcium channels'],a:0,ex:'The “-ase” ending means enzyme: acetylcholinesterase breaks down acetylcholine.'},
+{id:'L5-08',lv:5,type:'mc',q:'Which of these is NOT a way neurotransmitter is cleared from the cleft?',opts:['Being absorbed into the myelin sheath','Breakdown by an enzyme','Reuptake into the presynaptic terminal','Diffusing away from the synapse'],a:0,ex:'The three real clearance routes are enzymatic breakdown, reuptake, and diffusion. Myelin plays no role.'},
+{id:'L5-09',lv:5,type:'mc',q:'Spatial summation is when:',opts:['Several presynaptic neurons fire at the same time and their effects add up','One presynaptic neuron fires rapidly several times','One action potential splits into two','The signal travels to a different part of the brain'],a:0,ex:'Spatial = space: many inputs from different places at once.'},
+{id:'L5-10',lv:5,type:'mc',q:'Temporal summation is when:',opts:['One presynaptic neuron fires repeatedly in quick succession and the effects add up','Several presynaptic neurons fire at once','A signal is delayed at the synapse','The postsynaptic neuron fires on a timer'],a:0,ex:'Temporal = time: one input firing fast enough that each potential builds on the last.'},
+{id:'L5-11',lv:5,type:'mc',q:'Electrical synapses:',opts:['Pass ions directly between cells through gap junctions, very fast','Use neurotransmitter released into a cleft','Are slower than chemical synapses','Exist only in the PNS'],a:0,ex:'Gap junctions connect the cells directly, so there is almost no delay.'},
+{id:'L5-12',lv:5,type:'whatif',q:'What if a drug blocks acetylcholinesterase?',opts:['Acetylcholine builds up and keeps stimulating the postsynaptic cell','Acetylcholine is never released','Acetylcholine breaks down faster','Acetylcholine turns into calcium'],a:0,ex:'Without the enzyme to clear it, acetylcholine stays in the cleft and keeps binding receptors.'},
+{id:'L5-13',lv:5,type:'whatif',q:'What if the voltage-gated Ca²⁺ channels in the axon terminal were blocked?',opts:['Neurotransmitter release would stop, so the signal wouldn’t cross the synapse','The action potential would stop traveling along the axon','More neurotransmitter would be released','There would be no effect'],a:0,ex:'The action potential still reaches the terminal, but without calcium entry the vesicles don’t release. The signal stops at the synapse.'},
+{id:'L5-14',lv:5,type:'mc',q:'Summed postsynaptic potentials trigger an action potential if they reach threshold at the:',opts:['Initial segment (trigger zone) near the axon hillock','Tips of the dendrites','Axon terminals','Myelin sheath'],a:0,ex:'The initial segment has a high density of voltage-gated Na⁺ channels, so that’s where the decision to fire is made.'},
+// L1–L5 additions (new formats + neuronal circuits)
+{id:'L1-15',lv:1,type:'match',q:'Match each term to what it is:',pairs:[['Nerve','Bundle of axons in the PNS'],['Tract','Bundle of axons in the CNS'],['Ganglion','Cluster of cell bodies in the PNS'],['Nucleus','Cluster of cell bodies in the CNS']],ex:'Same two structures, different names by location. PNS: nerve and ganglion. CNS: tract and nucleus.'},
+{id:'L2-15',lv:2,type:'match',q:'Match each glial cell to its job:',pairs:[['Oligodendrocyte','Myelinates CNS axons'],['Schwann cell','Myelinates PNS axons'],['Microglial cell','Engulfs debris and pathogens in the CNS'],['Ependymal cell','Lines ventricles and helps make CSF'],['Astrocyte','Supports the blood-brain barrier']],ex:'Four glial types live in the CNS (astrocytes, oligodendrocytes, microglia, ependymal cells) and two in the PNS (Schwann cells, satellite cells).'},
+{id:'L2-16',lv:2,type:'multi',q:'Which glial cells are found in the CNS? Select all that apply.',opts:['Astrocytes','Oligodendrocytes','Microglia','Ependymal cells','Schwann cells','Satellite cells'],a:[0,1,2,3],ex:'CNS: astrocytes, oligodendrocytes, microglia, ependymal cells. Schwann and satellite cells are the PNS pair.'},
+{id:'L3-13',lv:3,type:'type',q:'The pump that moves 3 Na⁺ out and 2 K⁺ in for each ATP is the ________ pump.',ans:['sodium-potassium','sodium potassium','Na+/K+','Na K','sodium-potassium ATPase','Na+/K+ ATPase','sodium potassium pump'],ex:'The sodium-potassium pump (Na⁺/K⁺ ATPase).'},
+{id:'L4-16',lv:4,type:'multi',q:'Which of these increase how fast an axon conducts action potentials? Select all that apply.',opts:['Myelination','Larger axon diameter','Smaller axon diameter','Loss of myelin'],a:[0,1],ex:'Myelin and a larger diameter both speed conduction. Thin or demyelinated axons are slower.'},
+{id:'L4-17',lv:4,type:'type',q:'The period when no stimulus, however strong, can trigger another action potential is the ________ refractory period.',ans:['absolute'],ex:'Absolute: impossible, because Na⁺ channels are inactivated. Relative: possible with a stronger-than-normal stimulus.'},
+{id:'L5-15',lv:5,type:'mc',q:'In a converging circuit:',opts:['Many presynaptic neurons synapse on one postsynaptic neuron','One presynaptic neuron synapses on many postsynaptic neurons','A neuron restimulates itself in a loop','Signals pass through only one synapse'],a:0,ex:'Convergence = many inputs funnel into one neuron. Divergence = one neuron spreads its signal to many.'},
+{id:'L5-16',lv:5,type:'type',q:'One presynaptic neuron branching to synapse on many postsynaptic neurons is called ________.',ans:['divergence','divergent','divergent circuit','divergent pathway'],ex:'Divergence spreads one signal to many neurons. Its opposite is convergence.'},
+// Level 6: spinal cord, spinal nerves, reflexes
+{id:'L6-01',lv:6,type:'mc',q:'In adults, the spinal cord itself ends at about which vertebral level?',opts:['L1–L2','S5','C7','T6'],a:0,ex:'The cord tapers into the conus medullaris near L1–L2. Below that, the vertebral canal holds nerve roots, not cord.'},
+{id:'L6-02',lv:6,type:'mc',q:'The bundle of spinal nerve roots that continues below the end of the spinal cord is the:',opts:['Cauda equina','Conus medullaris','Filum terminale','Dorsal root ganglion'],a:0,ex:'Cauda equina means “horse’s tail,” which is what the bundle of roots looks like.'},
+{id:'L6-03',lv:6,type:'mc',q:'In the spinal cord, gray matter is located:',opts:['In the center, in a butterfly or H shape','On the outside, surrounding white matter','Scattered evenly throughout','Only in the cervical region'],a:0,ex:'The spinal cord is the reverse of the cerebrum: gray matter inside, white matter tracts outside.'},
+{id:'L6-04',lv:6,type:'match',q:'Match each part to its role:',pairs:[['Dorsal (posterior) root','Carries sensory axons into the cord'],['Ventral (anterior) root','Carries motor axons out of the cord'],['Dorsal root ganglion','Holds sensory neuron cell bodies'],['Spinal nerve','Mixed nerve with sensory and motor axons']],ex:'Sensory in through the back (dorsal), motor out through the front (ventral). The roots join to form a mixed spinal nerve.'},
+{id:'L6-05',lv:6,type:'mc',q:'How many pairs of spinal nerves are there?',opts:['31','12','33','26'],a:0,ex:'31 pairs: 8 cervical, 12 thoracic, 5 lumbar, 5 sacral, 1 coccygeal. (12 pairs is the cranial nerve count.)'},
+{id:'L6-06',lv:6,type:'multi',q:'Which of these are spinal nerve plexuses? Select all that apply.',opts:['Cervical plexus','Brachial plexus','Lumbar plexus','Sacral plexus','Thoracic plexus','Cranial plexus'],a:[0,1,2,3],ex:'Most thoracic spinal nerves don’t form a plexus. They run between the ribs as intercostal nerves.'},
+{id:'L6-07',lv:6,type:'order',q:'Put the parts of a reflex arc in order:',items:['A sensory receptor detects the stimulus','A sensory neuron carries the signal to the CNS','An integration center in the CNS processes it','A motor neuron carries the signal out','An effector (muscle or gland) responds'],ex:'Receptor → sensory neuron → integration center → motor neuron → effector.'},
+{id:'L6-08',lv:6,type:'mc',q:'The stretch reflex (like the knee-jerk reflex) is:',opts:['Monosynaptic: the sensory neuron synapses directly on the motor neuron','Polysynaptic, with several interneurons','Controlled by the autonomic nervous system','Processed in the cerebral cortex'],a:0,ex:'Only one synapse, which is why it’s so fast.'},
+{id:'L6-09',lv:6,type:'mc',q:'Which receptor detects muscle stretch in the stretch reflex?',opts:['Muscle spindle','Golgi tendon organ','Lamellated (Pacinian) corpuscle','Nociceptor'],a:0,ex:'Muscle spindles sense stretch. Golgi tendon organs sense tension in the tendon.'},
+{id:'L6-10',lv:6,type:'mc',q:'You step on a tack. One leg pulls back while the other leg straightens to hold you up. The second part is the:',opts:['Crossed extensor reflex','Stretch reflex','Golgi tendon reflex','Patellar reflex'],a:0,ex:'The withdrawal (flexor) reflex pulls the injured leg back. The crossed extensor reflex extends the opposite leg.'},
+{id:'L6-11',lv:6,type:'whatif',q:'What if the dorsal root of one spinal nerve were cut?',opts:['Sensation from that area would be lost, but movement would remain','Movement would be lost, but sensation would remain','Both sensation and movement would be lost','Nothing would change'],a:0,ex:'The dorsal root carries only sensory axons. Motor axons leave through the intact ventral root.'},
+{id:'L6-12',lv:6,type:'type',q:'The withdrawal reflex that pulls your hand away from a hot stove is also called the ________ reflex.',ans:['flexor','flexion'],ex:'Flexor (withdrawal) reflex. It’s polysynaptic, with interneurons in the cord.'},
+{id:'L6-13',lv:6,type:'mc',q:'A dermatome is:',opts:['The area of skin supplied by the sensory fibers of one spinal nerve','A group of muscles supplied by one nerve','A segment of the spinal cord','A layer of the skin'],a:0,ex:'Dermatome maps let clinicians trace numbness to a specific spinal nerve.'},
+// Level 7: brain and cranial nerves
+{id:'L7-01',lv:7,type:'match',q:'Match each brain region to a main function:',pairs:[['Cerebrum','Conscious thought and voluntary movement'],['Cerebellum','Coordinates movement and balance'],['Medulla oblongata','Regulates heart rate and breathing'],['Hypothalamus','Regulates body temperature, hunger, and thirst']],ex:'Quick map: thinking (cerebrum), coordination (cerebellum), vital reflexes (medulla), homeostasis (hypothalamus).'},
+{id:'L7-02',lv:7,type:'mc',q:'The primary motor cortex is in the:',opts:['Precentral gyrus of the frontal lobe','Postcentral gyrus of the parietal lobe','Occipital lobe','Temporal lobe'],a:0,ex:'Pre = before the central sulcus = motor. Post = after = sensory.'},
+{id:'L7-03',lv:7,type:'mc',q:'The primary somatosensory cortex is in the:',opts:['Postcentral gyrus of the parietal lobe','Precentral gyrus of the frontal lobe','Occipital lobe','Insula'],a:0,ex:'It receives touch, pain, temperature, and body-position information.'},
+{id:'L7-04',lv:7,type:'mc',q:'The primary visual cortex is in the:',opts:['Occipital lobe','Temporal lobe','Frontal lobe','Parietal lobe'],a:0,ex:'Vision is processed at the back of the brain.'},
+{id:'L7-05',lv:7,type:'mc',q:'The primary auditory cortex is in the:',opts:['Temporal lobe','Occipital lobe','Frontal lobe','Parietal lobe'],a:0,ex:'Temporal lobe, near the ears.'},
+{id:'L7-06',lv:7,type:'mc',q:'The thalamus mainly:',opts:['Relays and filters sensory information on its way to the cerebral cortex','Regulates body temperature','Coordinates balance','Produces cerebrospinal fluid'],a:0,ex:'Think of it as the sensory relay station. Temperature is the hypothalamus.'},
+{id:'L7-07',lv:7,type:'mc',q:'Cerebrospinal fluid is produced mainly by the:',opts:['Choroid plexuses in the ventricles','Arachnoid granulations','Dura mater','Thalamus'],a:0,ex:'Choroid plexuses make CSF. Arachnoid granulations return it to the blood.'},
+{id:'L7-08',lv:7,type:'order',q:'Put the meninges in order from outermost to innermost:',items:['Dura mater','Arachnoid mater','Pia mater'],ex:'Memory trick: “DAP.” Dura is tough and outer. Pia is delicate and clings to the brain.'},
+{id:'L7-09',lv:7,type:'mc',q:'How many pairs of cranial nerves are there?',opts:['12','31','10','8'],a:0,ex:'12 cranial nerve pairs. 31 pairs is the spinal nerve count.'},
+{id:'L7-10',lv:7,type:'match',q:'Match each cranial nerve to its main function:',pairs:[['Olfactory (I)','Smell'],['Optic (II)','Vision'],['Oculomotor (III)','Most eye movements and pupil constriction'],['Facial (VII)','Facial expression'],['Vagus (X)','Parasympathetic supply to the heart, lungs, and gut']],ex:'Learn the numbers with the names. Exams often give one and ask for the other.'},
+{id:'L7-11',lv:7,type:'type',q:'Cranial nerve VIII, which carries hearing and balance, is the ________ nerve.',ans:['vestibulocochlear'],ex:'Vestibulo (balance) + cochlear (hearing).'},
+{id:'L7-12',lv:7,type:'whatif',q:'What if the cerebellum were damaged?',opts:['Movements would become uncoordinated and balance would suffer','Hearing would be lost','One side of the body would be paralyzed','The sense of smell would be lost'],a:0,ex:'The cerebellum doesn’t start movement. It smooths and coordinates it, so damage causes clumsy, unsteady movement (ataxia).'},
+{id:'L7-13',lv:7,type:'multi',q:'Which structures are part of the brainstem? Select all that apply.',opts:['Midbrain','Pons','Medulla oblongata','Thalamus','Cerebellum'],a:[0,1,2],ex:'Brainstem = midbrain, pons, medulla. The thalamus is in the diencephalon, and the cerebellum is separate.'},
+{id:'L7-14',lv:7,type:'mc',q:'Broca’s area is mainly involved in:',opts:['Producing speech','Understanding spoken language','Processing vision','Detecting smell'],a:0,ex:'Broca’s area (frontal lobe) is for producing speech. Wernicke’s area is for understanding language.'},
+// Level 8: integration, sensory and motor pathways
+{id:'L8-01',lv:8,type:'mc',q:'Ascending tracts in the spinal cord carry:',opts:['Sensory information up to the brain','Motor commands down from the brain','Autonomic signals to the heart','Cerebrospinal fluid'],a:0,ex:'Ascending = sensory, going up. Descending = motor, going down.'},
+{id:'L8-02',lv:8,type:'mc',q:'Descending tracts carry:',opts:['Motor commands from the brain down to the spinal cord','Sensory information up to the brain','Pain signals only','Signals between the two cerebral hemispheres'],a:0,ex:'Descending tracts carry motor commands toward lower motor neurons.'},
+{id:'L8-03',lv:8,type:'mc',q:'Because most sensory and motor pathways cross over, the left side of the body is controlled mainly by the:',opts:['Right cerebral hemisphere','Left cerebral hemisphere','Both hemispheres equally','Cerebellum only'],a:0,ex:'Most pathways decussate, so each hemisphere handles the opposite side of the body.'},
+{id:'L8-04',lv:8,type:'type',q:'The crossing of a pathway from one side of the CNS to the other is called ________.',ans:['decussation','decussate','decussating'],ex:'Decussation, the crossing over.'},
+{id:'L8-05',lv:8,type:'mc',q:'The corticospinal (pyramidal) tract controls:',opts:['Voluntary movement of skeletal muscle','Pain and temperature sensation','Balance','Heart rate'],a:0,ex:'From motor cortex (cortico-) to spinal cord (-spinal): conscious, voluntary movement.'},
+{id:'L8-06',lv:8,type:'mc',q:'A typical somatic sensory pathway to the cerebral cortex uses a chain of how many neurons?',opts:['Three (first-, second-, and third-order)','One','Two','Five'],a:0,ex:'First-order neuron to the CNS, second-order up to the thalamus, third-order to the cortex.'},
+{id:'L8-07',lv:8,type:'mc',q:'A lower motor neuron:',opts:['Has its cell body in the spinal cord or brainstem and directly innervates skeletal muscle','Has its cell body in the motor cortex','Carries sensory information','Belongs to the autonomic nervous system'],a:0,ex:'Upper motor neurons start in the brain. Lower motor neurons carry the command out to the muscle.'},
+{id:'L8-08',lv:8,type:'multi',q:'Which of these are roles of the cerebellum in movement? Select all that apply.',opts:['Comparing intended movement with actual movement','Coordinating the timing and smoothness of movement','Helping maintain balance and posture','Relaying all sensory information to the cortex','Regulating heart rate'],a:[0,1,2],ex:'The cerebellum compares plan vs. result and corrects it. The sensory relay is the thalamus, and heart rate is the medulla.'},
+{id:'L8-09',lv:8,type:'whatif',q:'What if a stroke damaged the left primary motor cortex?',opts:['Weakness or paralysis on the right side of the body','Weakness or paralysis on the left side of the body','Weakness on both sides equally','Loss of vision in the left eye'],a:0,ex:'Motor pathways cross, so a left-hemisphere injury affects the right side of the body.'},
+{id:'L8-10',lv:8,type:'mc',q:'The basal nuclei (basal ganglia) help:',opts:['Start and stop movements and control muscle tone','Detect pain','Produce CSF','Control breathing rhythm'],a:0,ex:'When the basal nuclei malfunction, as in Parkinson’s disease, starting and stopping movement becomes difficult.'},
+{id:'L8-11',lv:8,type:'mc',q:'The spinothalamic (anterolateral) tract carries:',opts:['Pain and temperature','Fine touch and body position','Voluntary motor commands','Balance information from the inner ear'],a:0,ex:'Spinothalamic = pain and temperature. Fine touch and body position travel in the dorsal column pathway.'},
+// Level 9: smell, taste, vision
+{id:'L9-01',lv:9,type:'mc',q:'The receptors for smell are:',opts:['Olfactory receptor neurons in the nasal epithelium','Mechanoreceptors in the nasal cavity','Taste buds on the tongue','Photoreceptors'],a:0,ex:'Olfactory receptor neurons are chemoreceptors that detect airborne chemicals.'},
+{id:'L9-02',lv:9,type:'multi',q:'Which are basic tastes? Select all that apply.',opts:['Sweet','Sour','Salty','Bitter','Umami','Spicy'],a:[0,1,2,3,4],ex:'Five basic tastes. “Spicy” is detected by pain and temperature receptors, not taste receptors.'},
+{id:'L9-03',lv:9,type:'match',q:'Match each part of the eye to its role:',pairs:[['Cornea','Clear front surface that bends most of the light'],['Iris','Colored muscle that changes pupil size'],['Lens','Fine-tunes focus for near or far'],['Retina','Contains the photoreceptors'],['Optic disc','Blind spot where the optic nerve leaves']],ex:'The optic disc has no photoreceptors, which is why it’s a blind spot.'},
+{id:'L9-04',lv:9,type:'mc',q:'Cones are responsible for:',opts:['Color vision and sharp detail in bright light','Vision in dim light','Peripheral motion only','Producing the aqueous humor'],a:0,ex:'Cones: color and detail, bright light. Rods: dim light, black and white.'},
+{id:'L9-05',lv:9,type:'mc',q:'The fovea centralis:',opts:['Has only cones and gives the sharpest vision','Has only rods and gives night vision','Is the blind spot','Produces vitreous humor'],a:0,ex:'Looking straight at something puts its image on the fovea.'},
+{id:'L9-06',lv:9,type:'order',q:'Put the path of light through the eye in order:',items:['Cornea','Aqueous humor','Pupil','Lens','Vitreous humor','Retina'],ex:'Front to back: cornea → aqueous humor → pupil → lens → vitreous humor → retina.'},
+{id:'L9-07',lv:9,type:'mc',q:'To focus on a near object (accommodation):',opts:['The ciliary muscle contracts and the lens becomes more rounded','The ciliary muscle relaxes and the lens flattens','The iris dilates the pupil','The cornea changes shape'],a:0,ex:'Contracting the ciliary muscle slackens the suspensory ligaments, so the lens rounds up and bends light more.'},
+{id:'L9-08',lv:9,type:'mc',q:'Pupil constriction in bright light is controlled by:',opts:['Parasympathetic fibers in the oculomotor nerve (CN III)','Sympathetic fibers','Motor fibers in the optic nerve','The trochlear nerve (CN IV)'],a:0,ex:'Parasympathetic = constrict. Sympathetic = dilate.'},
+{id:'L9-09',lv:9,type:'type',q:'The light-sensitive pigment in rods is ________.',ans:['rhodopsin'],ex:'Rhodopsin breaks down in light, which is why it takes time for your eyes to adjust to the dark.'},
+{id:'L9-10',lv:9,type:'whatif',q:'What if a tumor pressed on the middle of the optic chiasm, where fibers from the inner (nasal) half of each retina cross?',opts:['The outer (peripheral) visual field would be lost in both eyes','One eye would go completely blind','Color vision would be lost','Nothing, because the fibers would reroute'],a:0,ex:'Nasal retina fibers carry the outer visual fields, so cutting them where they cross causes “tunnel vision” on both sides.'},
+{id:'L9-11',lv:9,type:'mc',q:'In myopia (nearsightedness):',opts:['The image focuses in front of the retina','The image focuses behind the retina','The cornea is perfectly shaped','The lens cannot change shape with age'],a:0,ex:'Nearsighted: near is clear, far is blurry, focus falls short of the retina. Farsighted: focus falls behind.'},
+{id:'L9-12',lv:9,type:'order',q:'Put the path of a visual signal through the retina in order:',items:['Photoreceptors (rods and cones)','Bipolar cells','Ganglion cells','Optic nerve'],ex:'Ganglion cell axons gather at the optic disc and leave as the optic nerve.'},
+// Level 10: hearing and balance
+{id:'L10-01',lv:10,type:'order',q:'Put the path of sound in order:',items:['Sound enters the auricle and external auditory canal','The tympanic membrane vibrates','The ossicles pass the vibration along','The stapes pushes on the oval window','Fluid waves travel through the cochlea','Hair cells in the spiral organ bend'],ex:'Air → eardrum → bones → oval window → fluid → hair cells. Bending hair cells is what turns sound into nerve signals.'},
+{id:'L10-02',lv:10,type:'order',q:'Put the ossicles in order, from the eardrum to the oval window:',items:['Malleus','Incus','Stapes'],ex:'Hammer, anvil, stirrup. The stapes is the smallest bone in the body.'},
+{id:'L10-03',lv:10,type:'mc',q:'The receptors for hearing are in the:',opts:['Spiral organ (organ of Corti) in the cochlea','Semicircular canals','Utricle','Tympanic membrane'],a:0,ex:'Hearing: cochlea. Balance: vestibule and semicircular canals.'},
+{id:'L10-04',lv:10,type:'mc',q:'The auditory (Eustachian) tube:',opts:['Equalizes pressure between the middle ear and the throat','Carries sound to the cochlea','Detects head rotation','Produces earwax'],a:0,ex:'That’s why yawning or swallowing “pops” your ears on a plane.'},
+{id:'L10-05',lv:10,type:'mc',q:'The pitch of a sound is determined by:',opts:['Where along the basilar membrane the hair cells are stimulated','How many ossicles vibrate','How wide the external canal is','Which semicircular canal is stimulated'],a:0,ex:'High pitches stimulate the base of the cochlea. Low pitches stimulate the apex.'},
+{id:'L10-06',lv:10,type:'type',q:'Loudness depends on the sound wave’s ________.',ans:['amplitude'],ex:'Amplitude = loudness. Frequency = pitch.'},
+{id:'L10-07',lv:10,type:'mc',q:'The semicircular canals detect:',opts:['Rotation (angular movement) of the head','Head position relative to gravity','Sound frequency','Pressure in the middle ear'],a:0,ex:'Three canals at right angles cover rotation in every direction.'},
+{id:'L10-08',lv:10,type:'mc',q:'The utricle and saccule detect:',opts:['Head position relative to gravity and straight-line acceleration','Head rotation','Sound loudness','Light intensity'],a:0,ex:'Tilting your head or riding in an accelerating car stimulates the utricle and saccule.'},
+{id:'L10-09',lv:10,type:'match',q:'Match each structure to its role:',pairs:[['Cochlea','Hearing'],['Semicircular canals','Head rotation'],['Utricle and saccule','Head position and straight-line acceleration'],['Auditory tube','Equalizing middle ear pressure']],ex:'Inner ear: cochlea (hearing) plus vestibule and semicircular canals (balance).'},
+{id:'L10-10',lv:10,type:'multi',q:'Which of these are in the middle ear? Select all that apply.',opts:['Malleus','Incus','Stapes','Cochlea','Semicircular canals','Auricle'],a:[0,1,2],ex:'Middle ear: the three ossicles. Cochlea and canals are inner ear. The auricle is outer ear.'},
+{id:'L10-11',lv:10,type:'whatif',q:'What if the stapes became fixed in place and couldn’t vibrate?',opts:['Conductive hearing loss: vibrations couldn’t reach the inner ear well','Sensorineural hearing loss from damaged hair cells','Loss of balance only','No change in hearing'],a:0,ex:'Conductive loss = a problem getting sound to the inner ear. Sensorineural loss = damage to hair cells or the nerve.'},
+// Level 11: autonomic nervous system
+{id:'L11-01',lv:11,type:'mc',q:'The autonomic nervous system’s two main divisions are:',opts:['Sympathetic and parasympathetic','Somatic and visceral','Central and peripheral','Sensory and motor'],a:0,ex:'Sympathetic = “fight or flight.” Parasympathetic = “rest and digest.”'},
+{id:'L11-02',lv:11,type:'match',q:'Match each term to its description:',pairs:[['Sympathetic division','Thoracolumbar outflow (T1–L2)'],['Parasympathetic division','Craniosacral outflow'],['Preganglionic neuron','Cell body in the CNS'],['Postganglionic neuron','Cell body in an autonomic ganglion']],ex:'Sympathetic fibers leave from the thoracic and lumbar cord. Parasympathetic fibers leave from the brainstem and sacral cord.'},
+{id:'L11-03',lv:11,type:'multi',q:'Which are effects of sympathetic stimulation? Select all that apply.',opts:['Increased heart rate','Pupil dilation','Airways widen (bronchodilation)','Glycogen breakdown that raises blood glucose','Increased digestive activity','Pupil constriction'],a:[0,1,2,3],ex:'Fight or flight: more heart output, more light, more air, more fuel. Digestion slows down.'},
+{id:'L11-04',lv:11,type:'mc',q:'An autonomic motor pathway from the CNS to the effector uses how many neurons?',opts:['Two (preganglionic and postganglionic)','One','Three','Four'],a:0,ex:'Autonomic: two neurons with a ganglion between them. Somatic motor: one neuron straight to skeletal muscle.'},
+{id:'L11-05',lv:11,type:'mc',q:'All preganglionic autonomic neurons release:',opts:['Acetylcholine','Norepinephrine','Epinephrine','Dopamine'],a:0,ex:'Both divisions use acetylcholine at the ganglion.'},
+{id:'L11-06',lv:11,type:'mc',q:'Most sympathetic postganglionic neurons release:',opts:['Norepinephrine','Acetylcholine','Serotonin','GABA'],a:0,ex:'Most release norepinephrine. A notable exception is sweat glands, which receive acetylcholine.'},
+{id:'L11-07',lv:11,type:'mc',q:'Parasympathetic postganglionic neurons release:',opts:['Acetylcholine','Norepinephrine','Epinephrine','Histamine'],a:0,ex:'Parasympathetic is acetylcholine at both synapses.'},
+{id:'L11-08',lv:11,type:'type',q:'The cranial nerve that carries parasympathetic fibers to the heart, lungs, and most abdominal organs is the ________ nerve.',ans:['vagus','vagal','X','CN X','cranial nerve X'],ex:'The vagus nerve (CN X) carries most of the body’s parasympathetic output.'},
+{id:'L11-09',lv:11,type:'mc',q:'The adrenal medulla:',opts:['Acts like a sympathetic ganglion, releasing epinephrine into the blood','Is part of the parasympathetic division','Releases acetylcholine into the blood','Controls pupil size directly'],a:0,ex:'Sympathetic preganglionic fibers stimulate the adrenal medulla, which releases mostly epinephrine as a hormone.'},
+{id:'L11-10',lv:11,type:'mc',q:'Sympathetic chain (paravertebral) ganglia are located:',opts:['Along both sides of the vertebral column','In or near the target organs','Inside the brainstem','In the dorsal roots'],a:0,ex:'Sympathetic ganglia sit close to the spinal cord, so preganglionic fibers are short and postganglionic fibers are long.'},
+{id:'L11-11',lv:11,type:'mc',q:'Parasympathetic ganglia are located:',opts:['In or near the target organs','Along both sides of the vertebral column','In the adrenal medulla','In the spinal cord gray matter'],a:0,ex:'Parasympathetic is the reverse: long preganglionic fibers, short postganglionic fibers.'},
+{id:'L11-12',lv:11,type:'whatif',q:'What if a drug like atropine blocks muscarinic acetylcholine receptors on the heart?',opts:['Heart rate increases, because parasympathetic slowing is blocked','Heart rate decreases','Heart rate stays the same','The heart stops'],a:0,ex:'At rest, the vagus nerve constantly slows the heart. Block its receptors and the heart rate rises.'},
+{id:'L11-13',lv:11,type:'whatif',q:'What if a beta-blocker blocks β₁ adrenergic receptors on the heart?',opts:['Heart rate and force of contraction decrease','Heart rate and force increase','Pupils dilate','Airways widen'],a:0,ex:'Norepinephrine and epinephrine speed up the heart through β₁ receptors. Blocking them reduces that sympathetic effect.'}
+,
+// ===== Exam 1 track (A): Ch 1–3 =====
+{id:'A1-01',lv:1,type:'order',q:'Put the levels of organization in order, smallest to largest:',items:['Chemical','Cellular','Tissue','Organ','Organ system','Organism'],ex:'Atoms and molecules build cells, cells build tissues, tissues build organs, organs work together as systems, and systems make up the organism.'},
+{id:'A1-02',lv:1,type:'mc',q:'Anatomical position is:',opts:['Standing upright, facing forward, arms at the sides, palms facing forward','Standing upright with palms facing backward','Lying face down','Standing with arms raised overhead'],a:0,ex:'Every directional term assumes this position, even if the body is lying down.'},
+{id:'A1-03',lv:1,type:'match',q:'Match each directional term to its meaning:',pairs:[['Superior','Toward the head'],['Inferior','Toward the feet'],['Anterior (ventral)','Toward the front'],['Posterior (dorsal)','Toward the back'],['Medial','Toward the midline']],ex:'These come in opposite pairs. Learn them as pairs.'},
+{id:'A1-04',lv:1,type:'match',q:'Match each directional term to its meaning:',pairs:[['Proximal','Closer to where a limb attaches'],['Distal','Farther from where a limb attaches'],['Superficial','Toward the body surface'],['Deep','Away from the body surface'],['Lateral','Away from the midline']],ex:'Proximal and distal are for limbs. Superficial and deep are for layers.'},
+{id:'A1-05',lv:1,type:'mc',q:'The elbow is ___ to the wrist.',opts:['Proximal','Distal','Lateral','Inferior'],a:0,ex:'The elbow is closer to where the arm attaches at the shoulder.'},
+{id:'A1-06',lv:1,type:'mc',q:'A sagittal plane divides the body into:',opts:['Right and left parts','Superior and inferior parts','Anterior and posterior parts','Inner and outer parts'],a:0,ex:'Sagittal = right/left (midsagittal = equal halves). Frontal (coronal) = front/back. Transverse = top/bottom.'},
+{id:'A1-07',lv:1,type:'type',q:'The plane that divides the body into anterior and posterior parts is the ________ plane.',ans:['frontal','coronal'],ex:'Frontal and coronal mean the same plane.'},
+{id:'A1-08',lv:1,type:'multi',q:'Which organs are in the abdominopelvic cavity? Select all that apply.',opts:['Stomach','Liver','Urinary bladder','Small intestine','Heart','Lungs'],a:[0,1,2,3],ex:'The heart and lungs are in the thoracic cavity, above the diaphragm.'},
+{id:'A1-09',lv:1,type:'mc',q:'The dorsal body cavity contains:',opts:['The cranial cavity (brain) and vertebral cavity (spinal cord)','The thoracic and abdominal cavities','The heart and lungs','The pelvic organs'],a:0,ex:'Dorsal cavity = the CNS. Ventral cavity = thoracic + abdominopelvic.'},
+{id:'A1-10',lv:1,type:'mc',q:'The layer of a serous membrane that covers the surface of an organ is the:',opts:['Visceral layer','Parietal layer','Mucous layer','Synovial layer'],a:0,ex:'Visceral = on the viscera (organs). Parietal = lining the cavity wall.'},
+{id:'A1-11',lv:1,type:'mc',q:'The heart sits inside the ________ cavity.',opts:['Pericardial','Pleural','Peritoneal','Cranial'],a:0,ex:'Pericardial = around the heart. Pleural = around the lungs. Peritoneal = abdominal organs.'},
+{id:'A1-12',lv:1,type:'mc',q:'The regional term “brachial” refers to the:',opts:['Arm','Thigh','Neck','Chest'],a:0,ex:'Brachial = arm. Femoral = thigh. Cervical = neck. Thoracic = chest.'},
+{id:'A2-01',lv:2,type:'mc',q:'Homeostasis is:',opts:['Keeping a relatively stable internal environment despite changing conditions','Keeping every body variable exactly fixed','The process of growth','The process of reproduction'],a:0,ex:'Variables move within a normal range around a set point. They are stable, not frozen.'},
+{id:'A2-02',lv:2,type:'order',q:'Put the parts of a feedback loop in order:',items:['A stimulus changes a variable','A receptor detects the change','The control center compares it to the set point','An effector produces a response','The variable returns toward the set point'],ex:'Stimulus → receptor → control center → effector → response.'},
+{id:'A2-03',lv:2,type:'mc',q:'In negative feedback, the response:',opts:['Opposes the original change','Amplifies the original change','Has no effect on the variable','Happens only during childbirth'],a:0,ex:'Negative feedback reverses the change and pushes the variable back toward normal.'},
+{id:'A2-04',lv:2,type:'mc',q:'In positive feedback, the response:',opts:['Amplifies the original change until an endpoint is reached','Reverses the original change','Keeps the variable at the set point','Shuts the system down immediately'],a:0,ex:'Positive feedback runs until something ends it, like the birth of the baby or a finished clot.'},
+{id:'A2-05',lv:2,type:'multi',q:'Which are examples of positive feedback? Select all that apply.',opts:['Oxytocin strengthening uterine contractions during childbirth','Blood clotting','Sweating when body temperature rises','Insulin release when blood glucose rises','Shivering when you’re cold'],a:[0,1],ex:'Childbirth and clotting amplify themselves. Sweating, insulin, and shivering all reverse a change (negative feedback).'},
+{id:'A2-06',lv:2,type:'match',q:'Match each feedback-loop part to its job:',pairs:[['Receptor','Detects a change'],['Control center','Compares to the set point and decides'],['Effector','Carries out the response'],['Set point','The normal target value']],ex:'Receptor senses, control center decides, effector acts.'},
+{id:'A2-07',lv:2,type:'whatif',q:'What if your body temperature rises during a hard workout?',opts:['Sweat glands secrete and skin blood vessels dilate, bringing temperature down','Skin blood vessels constrict to hold heat in','You start shivering','The set point drops permanently'],a:0,ex:'Classic negative feedback: heat is released through the skin and by evaporating sweat.'},
+{id:'A2-08',lv:2,type:'type',q:'The normal target value a control center works to maintain is the ________.',ans:['set point','setpoint'],ex:'The set point, such as about 37 °C for core body temperature.'},
+{id:'A2-09',lv:2,type:'mc',q:'In body temperature regulation, the control center is the:',opts:['Hypothalamus','Thyroid gland','Skin','Heart'],a:0,ex:'The hypothalamus compares body temperature to the set point and sends out the response.'},
+{id:'A2-10',lv:2,type:'whatif',q:'What kind of feedback is this? After a meal, blood glucose rises, the pancreas releases insulin, and glucose falls back to normal.',opts:['Negative feedback','Positive feedback','No feedback','Not related to homeostasis'],a:0,ex:'The response (lower glucose) opposes the change (higher glucose).'},
+{id:'A2-11',lv:2,type:'mc',q:'Most homeostatic control in the body works by:',opts:['Negative feedback','Positive feedback','Random variation','Conscious decisions'],a:0,ex:'Negative feedback is the default. Positive feedback is the exception.'},
+{id:'A3-01',lv:3,type:'match',q:'Match each particle to its description:',pairs:[['Proton','Positive charge, in the nucleus'],['Neutron','No charge, in the nucleus'],['Electron','Negative charge, outside the nucleus']],ex:'Protons and neutrons make up the nucleus. Electrons determine how atoms bond.'},
+{id:'A3-02',lv:3,type:'mc',q:'An element’s atomic number equals its number of:',opts:['Protons','Neutrons','Electrons plus neutrons','Protons plus neutrons'],a:0,ex:'Atomic number = protons. Mass number = protons + neutrons.'},
+{id:'A3-03',lv:3,type:'mc',q:'Isotopes of an element differ in their number of:',opts:['Neutrons','Protons','Electrons only','Chemical bonds'],a:0,ex:'Same protons (same element), different neutrons (different mass).'},
+{id:'A3-04',lv:3,type:'mc',q:'In an ionic bond:',opts:['Electrons are transferred, and oppositely charged ions attract','Electrons are shared equally','Electrons are shared unequally','Hydrogen atoms link two water molecules'],a:0,ex:'Example: Na⁺ and Cl⁻ in table salt.'},
+{id:'A3-05',lv:3,type:'mc',q:'In a polar covalent bond:',opts:['Electrons are shared unequally, creating partial charges','Electrons are transferred completely','Electrons are shared equally','No electrons are involved'],a:0,ex:'In water, oxygen pulls the shared electrons harder, so oxygen is slightly negative and the hydrogens slightly positive.'},
+{id:'A3-06',lv:3,type:'mc',q:'Hydrogen bonds are:',opts:['Weak attractions between a slightly positive hydrogen and a slightly negative atom like oxygen or nitrogen','The strongest bonds in the body','Bonds formed by transferring electrons','Bonds between two hydrogen ions'],a:0,ex:'Individually weak, but they hold water molecules together and shape proteins and DNA.'},
+{id:'A3-07',lv:3,type:'multi',q:'Which are properties of water that matter in the body? Select all that apply.',opts:['High heat capacity','Excellent solvent for polar and ionic substances','Takes part in reactions such as hydrolysis','It is a nonpolar molecule','It cannot form hydrogen bonds'],a:[0,1,2],ex:'Water is polar and hydrogen-bonds readily. That’s the source of its other useful properties.'},
+{id:'A3-08',lv:3,type:'mc',q:'Normal blood pH is about:',opts:['7.35–7.45','6.8–7.0','7.8–8.0','5.5–6.5'],a:0,ex:'Slightly basic. Below 7.35 is acidosis. Above 7.45 is alkalosis.'},
+{id:'A3-09',lv:3,type:'mc',q:'An acid is a substance that:',opts:['Releases hydrogen ions (H⁺) in solution','Absorbs hydrogen ions','Has a pH above 7','Resists changes in pH'],a:0,ex:'Acids donate H⁺. Bases accept H⁺ (or release OH⁻).'},
+{id:'A3-10',lv:3,type:'mc',q:'Compared with a solution at pH 5, a solution at pH 3 has:',opts:['100 times more H⁺','2 times more H⁺','100 times less H⁺','The same amount of H⁺'],a:0,ex:'The pH scale is logarithmic: each step is 10×, so two steps is 10 × 10 = 100×.'},
+{id:'A3-11',lv:3,type:'type',q:'A substance that resists changes in pH is called a ________.',ans:['buffer'],ex:'Buffers absorb or release H⁺ to keep pH steady. The bicarbonate system is the main blood buffer.'},
+{id:'A3-12',lv:3,type:'mc',q:'Hydrolysis:',opts:['Uses water to break a bond, splitting a larger molecule','Removes water to join two molecules','Transfers electrons between atoms','Releases hydrogen gas'],a:0,ex:'Hydro (water) + lysis (splitting). The reverse, building with water removed, is dehydration synthesis.'},
+{id:'A4-01',lv:4,type:'match',q:'Match each macromolecule to its building block:',pairs:[['Carbohydrate','Monosaccharide'],['Protein','Amino acid'],['Nucleic acid','Nucleotide'],['Triglyceride','Glycerol plus three fatty acids']],ex:'Lipids are the odd one out: triglycerides aren’t chains of one repeating monomer.'},
+{id:'A4-02',lv:4,type:'mc',q:'The main fuel most cells use to make ATP is:',opts:['Glucose','Cholesterol','DNA','Collagen'],a:0,ex:'Glucose is broken down in cellular respiration to make ATP.'},
+{id:'A4-03',lv:4,type:'mc',q:'The storage form of glucose in the liver and skeletal muscle is:',opts:['Glycogen','Starch','Cellulose','Triglyceride'],a:0,ex:'Animals store glucose as glycogen. Starch and cellulose are plant polysaccharides.'},
+{id:'A4-04',lv:4,type:'mc',q:'Phospholipids have:',opts:['A water-loving (hydrophilic) head and two water-fearing (hydrophobic) tails','Two hydrophilic heads and no tails','A ring structure like cholesterol','A chain of amino acids'],a:0,ex:'That two-sided structure is why they form the bilayer of cell membranes.'},
+{id:'A4-05',lv:4,type:'mc',q:'Which of these is a steroid?',opts:['Cholesterol','Glycogen','Insulin','DNA'],a:0,ex:'Steroids have four fused carbon rings. Insulin is a protein, glycogen is a carbohydrate, and DNA is a nucleic acid.'},
+{id:'A4-06',lv:4,type:'mc',q:'A protein’s shape is ultimately determined by its:',opts:['Amino acid sequence','Number of phosphate groups','Fatty acid content','Location in the cell'],a:0,ex:'The sequence (primary structure) determines how the chain folds into its final shape.'},
+{id:'A4-07',lv:4,type:'mc',q:'Denaturation is:',opts:['Loss of a protein’s 3D shape, and its function, from heat or extreme pH','Joining amino acids into a chain','Copying DNA','Breaking down glycogen'],a:0,ex:'Function depends on shape, so an unfolded protein stops working.'},
+{id:'A4-08',lv:4,type:'mc',q:'Enzymes speed up reactions by:',opts:['Lowering the activation energy','Raising the activation energy','Being used up in the reaction','Adding heat to the cell'],a:0,ex:'Enzymes are catalysts. They aren’t consumed and can be used again.'},
+{id:'A4-09',lv:4,type:'whatif',q:'What if a very high fever pushes body temperature far above normal?',opts:['Some enzymes may denature and stop working','Enzymes work faster and faster without limit','Enzymes turn into carbohydrates','Nothing, because enzymes are unaffected by temperature'],a:0,ex:'Up to a point, heat speeds reactions. Beyond the optimum, the enzyme loses its shape.'},
+{id:'A4-10',lv:4,type:'multi',q:'Which are features of RNA? Select all that apply.',opts:['Contains uracil','Contains the sugar ribose','Usually single-stranded','Contains thymine','Contains the sugar deoxyribose'],a:[0,1,2],ex:'RNA: ribose, uracil, single strand. DNA: deoxyribose, thymine, double helix.'},
+{id:'A4-11',lv:4,type:'type',q:'The molecule cells use as their immediate energy currency is ________.',ans:['ATP','adenosine triphosphate'],ex:'Energy is released when ATP’s last phosphate bond is broken.'},
+{id:'A4-12',lv:4,type:'mc',q:'Saturated fatty acids:',opts:['Have no double bonds between carbons','Have one or more double bonds','Are always liquid at room temperature','Contain nitrogen'],a:0,ex:'“Saturated” with hydrogen, with straight chains that pack tightly, so they’re usually solid at room temperature.'},
+{id:'A5-01',lv:5,type:'mc',q:'The fluid mosaic model describes the plasma membrane as:',opts:['A phospholipid bilayer with proteins embedded in it, able to move','A rigid wall of protein','A single layer of cholesterol','A layer of carbohydrate only'],a:0,ex:'Fluid: the parts move. Mosaic: many different proteins scattered throughout.'},
+{id:'A5-02',lv:5,type:'mc',q:'Which crosses the phospholipid bilayer most easily by simple diffusion?',opts:['O₂ and CO₂','Glucose','Na⁺','Proteins'],a:0,ex:'Small nonpolar molecules slip through the lipid layer. Ions and large polar molecules need proteins.'},
+{id:'A5-03',lv:5,type:'mc',q:'Diffusion is movement of a substance:',opts:['From high concentration to low concentration, without ATP','From low concentration to high concentration, using ATP','Only through protein channels','Only of water'],a:0,ex:'Diffusion runs down the concentration gradient on its own.'},
+{id:'A5-04',lv:5,type:'mc',q:'Osmosis is:',opts:['The diffusion of water across a selectively permeable membrane','The active pumping of ions','The engulfing of large particles','The movement of solutes against a gradient'],a:0,ex:'Water moves toward the side with more solute (less water).'},
+{id:'A5-05',lv:5,type:'match',q:'Match each solution to what happens to a cell placed in it:',pairs:[['Hypertonic','The cell shrinks (crenates)'],['Hypotonic','The cell swells and may burst'],['Isotonic','No net change in cell volume']],ex:'Water moves toward higher solute concentration. Hypertonic outside pulls water out of the cell.'},
+{id:'A5-06',lv:5,type:'mc',q:'Facilitated diffusion:',opts:['Uses carrier or channel proteins to move substances down their gradient without ATP','Moves substances against their gradient using ATP','Moves only water','Requires vesicles'],a:0,ex:'Glucose entering most cells is the classic example.'},
+{id:'A5-07',lv:5,type:'mc',q:'Active transport:',opts:['Moves substances against their gradient using ATP','Moves substances down their gradient with no energy','Only moves water','Happens only in nerve cells'],a:0,ex:'The Na⁺/K⁺ pump is the classic example.'},
+{id:'A5-08',lv:5,type:'multi',q:'Which processes require ATP? Select all that apply.',opts:['The Na⁺/K⁺ pump','Endocytosis','Exocytosis','Simple diffusion','Osmosis','Facilitated diffusion'],a:[0,1,2],ex:'Pumps and vesicle transport need energy. Diffusion, osmosis, and facilitated diffusion don’t.'},
+{id:'A5-09',lv:5,type:'type',q:'“Cell eating,” in which a cell engulfs large particles such as bacteria, is called ________.',ans:['phagocytosis'],ex:'Phagocytosis = cell eating. Pinocytosis = cell drinking.'},
+{id:'A5-10',lv:5,type:'whatif',q:'What if red blood cells are placed in distilled water?',opts:['Water enters by osmosis, and the cells swell and may burst (hemolysis)','The cells shrink','Nothing changes','The cells divide'],a:0,ex:'Distilled water is hypotonic to the cell, so water rushes in.'},
+{id:'A5-11',lv:5,type:'mc',q:'Normal saline (0.9% NaCl) is ________ to body cells.',opts:['Isotonic','Hypertonic','Hypotonic','Toxic'],a:0,ex:'That’s why it’s used for IV fluids: cells neither shrink nor swell.'},
+{id:'A6-01',lv:6,type:'match',q:'Match each organelle to its main job:',pairs:[['Mitochondrion','Makes most of the cell’s ATP'],['Ribosome','Builds proteins'],['Rough ER','Makes proteins for export and membranes'],['Smooth ER','Makes lipids and detoxifies'],['Golgi apparatus','Modifies, sorts, and packages proteins']],ex:'Rough ER is rough because it’s studded with ribosomes.'},
+{id:'A6-02',lv:6,type:'mc',q:'Lysosomes:',opts:['Digest worn-out organelles and debris with enzymes','Make ATP','Build proteins','Store DNA'],a:0,ex:'Lysosomes are the cell’s recycling center.'},
+{id:'A6-03',lv:6,type:'mc',q:'Peroxisomes:',opts:['Break down fatty acids and detoxify substances such as hydrogen peroxide and alcohol','Package proteins for export','Organize spindle fibers','Contain the cell’s DNA'],a:0,ex:'They’re especially abundant in liver and kidney cells.'},
+{id:'A6-04',lv:6,type:'mc',q:'The nucleolus:',opts:['Makes ribosomal subunits','Makes ATP','Digests debris','Moves the cell'],a:0,ex:'The nucleolus is the dark spot inside the nucleus where ribosome parts are assembled.'},
+{id:'A6-05',lv:6,type:'multi',q:'Which are parts of the cytoskeleton? Select all that apply.',opts:['Microfilaments (actin)','Intermediate filaments','Microtubules','Ribosomes','Lysosomes'],a:[0,1,2],ex:'Three filament types, from thinnest to thickest: microfilaments, intermediate filaments, microtubules.'},
+{id:'A6-06',lv:6,type:'mc',q:'Microvilli:',opts:['Increase surface area for absorption','Move fluid across the cell surface','Make ATP','Organize the spindle'],a:0,ex:'Microvilli absorb (intestine, kidney). Cilia move things along the surface.'},
+{id:'A6-07',lv:6,type:'mc',q:'Centrioles help:',opts:['Organize the spindle fibers during cell division','Make lipids','Digest bacteria','Store calcium'],a:0,ex:'Centrioles sit in the centrosome, which organizes microtubules.'},
+{id:'A6-08',lv:6,type:'mc',q:'Which cells would you expect to have the most mitochondria?',opts:['Muscle cells','Mature red blood cells','Adipose (fat storage) cells','Cells of the epidermis’s dead outer layer'],a:0,ex:'High energy demand means more mitochondria. Mature red blood cells have none.'},
+{id:'A6-09',lv:6,type:'order',q:'Put the path of a secreted protein in order:',items:['Ribosomes on the rough ER build the protein','The protein enters the rough ER','A transport vesicle carries it to the Golgi apparatus','The Golgi modifies and packages it','A secretory vesicle fuses with the plasma membrane (exocytosis)'],ex:'Rough ER → Golgi → vesicle → out.'},
+{id:'A6-10',lv:6,type:'type',q:'The organelle known as the cell’s “powerhouse” is the ________.',ans:['mitochondrion','mitochondria'],ex:'Mitochondria make most ATP through aerobic respiration.'},
+{id:'A6-11',lv:6,type:'mc',q:'The nucleus:',opts:['Contains the cell’s DNA and directs its activities','Makes most of the cell’s ATP','Digests old organelles','Packages proteins for export'],a:0,ex:'It holds the genetic instructions and controls which proteins get made.'},
+{id:'A7-01',lv:7,type:'mc',q:'Transcription is:',opts:['Copying a gene’s DNA into mRNA in the nucleus','Building a protein at a ribosome','Copying all the DNA before division','Splitting the cytoplasm'],a:0,ex:'Transcription: DNA → mRNA. Translation: mRNA → protein.'},
+{id:'A7-02',lv:7,type:'mc',q:'Translation is:',opts:['Building a protein from mRNA at a ribosome','Copying DNA into mRNA','Copying DNA before division','Repairing DNA'],a:0,ex:'Ribosomes “translate” the nucleotide language into the amino acid language.'},
+{id:'A7-03',lv:7,type:'order',q:'Put protein synthesis in order:',items:['A gene’s DNA is transcribed into mRNA in the nucleus','mRNA leaves the nucleus through a nuclear pore','A ribosome attaches to the mRNA','tRNAs bring amino acids that match each codon','The amino acids are joined into a polypeptide'],ex:'Transcription in the nucleus, translation in the cytoplasm.'},
+{id:'A7-04',lv:7,type:'mc',q:'A codon is:',opts:['A three-base sequence on mRNA that specifies an amino acid','A single amino acid','A whole gene','A protein that copies DNA'],a:0,ex:'Three bases = one codon = one amino acid (or a stop signal).'},
+{id:'A7-05',lv:7,type:'mc',q:'A tRNA’s anticodon pairs with:',opts:['A codon on the mRNA','A gene on the DNA','A ribosome’s protein','An amino acid'],a:0,ex:'The anticodon makes sure the right amino acid is added.'},
+{id:'A7-06',lv:7,type:'type',q:'If the DNA template strand reads TAC, the mRNA codon made from it is ________.',ans:['AUG'],ex:'Pair each base: T→A, A→U (RNA uses uracil), C→G. AUG is also the start codon.'},
+{id:'A7-07',lv:7,type:'mc',q:'DNA is replicated during:',opts:['The S phase of interphase','Prophase','Anaphase','Cytokinesis'],a:0,ex:'S = synthesis. The cell copies its DNA before mitosis begins.'},
+{id:'A7-08',lv:7,type:'order',q:'Put the phases of mitosis in order:',items:['Prophase','Metaphase','Anaphase','Telophase'],ex:'Memory trick: “PMAT.”'},
+{id:'A7-09',lv:7,type:'match',q:'Match each phase of mitosis to what happens:',pairs:[['Prophase','Chromosomes condense and the spindle forms'],['Metaphase','Chromosomes line up at the cell’s center'],['Anaphase','Sister chromatids are pulled apart'],['Telophase','Nuclear envelopes re-form']],ex:'Metaphase = middle. Anaphase = apart.'},
+{id:'A7-10',lv:7,type:'mc',q:'Cytokinesis is:',opts:['Division of the cytoplasm into two cells','Copying the DNA','Lining up the chromosomes','Building proteins'],a:0,ex:'Mitosis divides the nucleus. Cytokinesis divides the rest of the cell.'},
+{id:'A7-11',lv:7,type:'mc',q:'Mitosis produces:',opts:['Two genetically identical daughter cells','Four genetically different cells','One larger cell','Two cells with half the DNA'],a:0,ex:'Mitosis is for growth and repair. Meiosis makes sex cells with half the chromosomes.'},
+{id:'A7-12',lv:7,type:'whatif',q:'What if cells keep dividing while ignoring the cell cycle’s checkpoints?',opts:['A tumor can form, which can become cancer','The cells stop making proteins','The cells become muscle tissue','Nothing, because checkpoints aren’t needed'],a:0,ex:'Checkpoints stop damaged cells from dividing. Losing that control is a hallmark of cancer.'},
+// ===== Exam 2 track (B): Ch 5–9 =====
+{id:'B1-01',lv:1,type:'order',q:'Put the layers of thick-skin epidermis in order, deepest to most superficial:',items:['Stratum basale','Stratum spinosum','Stratum granulosum','Stratum lucidum','Stratum corneum'],ex:'Memory trick: “Come, Let’s Get Sun Burned” reads from the surface down (corneum, lucidum, granulosum, spinosum, basale).'},
+{id:'B1-02',lv:1,type:'mc',q:'The stratum lucidum is found:',opts:['Only in thick skin of the palms, soles, and digits','In all skin','Only in the scalp','Only in the dermis'],a:0,ex:'Thin skin has four epidermal layers. Thick skin adds the stratum lucidum for five.'},
+{id:'B1-03',lv:1,type:'mc',q:'The deepest epidermal layer, where new cells are produced, is the:',opts:['Stratum basale','Stratum corneum','Stratum granulosum','Stratum spinosum'],a:0,ex:'Stem cells in the stratum basale divide and push new cells toward the surface.'},
+{id:'B1-04',lv:1,type:'mc',q:'The most superficial epidermal layer, made of dead keratinized cells, is the:',opts:['Stratum corneum','Stratum basale','Stratum lucidum','Papillary layer'],a:0,ex:'Corneum = horny. Its dead cells shed and are constantly replaced from below.'},
+{id:'B1-05',lv:1,type:'match',q:'Match each epidermal cell to its role:',pairs:[['Keratinocyte','Produces keratin'],['Melanocyte','Produces melanin'],['Merkel cell','Touch receptor'],['Dendritic (Langerhans) cell','Immune defense']],ex:'Keratinocytes are by far the most common cell type in the epidermis.'},
+{id:'B1-06',lv:1,type:'mc',q:'The epidermis is made of:',opts:['Keratinized stratified squamous epithelium','Simple cuboidal epithelium','Dense irregular connective tissue','Adipose tissue'],a:0,ex:'Many layers (stratified), flat surface cells (squamous), toughened with keratin.'},
+{id:'B1-07',lv:1,type:'mc',q:'How does the epidermis get nutrients?',opts:['By diffusion from blood vessels in the dermis','From its own capillaries','From the hypodermis directly','From sweat'],a:0,ex:'The epidermis is avascular (no blood vessels), which is one reason the surface cells die.'},
+{id:'B1-08',lv:1,type:'mc',q:'Thin skin has how many epidermal layers?',opts:['Four','Five','Three','Six'],a:0,ex:'Basale, spinosum, granulosum, corneum. No lucidum.'},
+{id:'B1-09',lv:1,type:'multi',q:'Which contribute to skin color? Select all that apply.',opts:['Melanin','Carotene','Hemoglobin in dermal blood','Keratin','Collagen'],a:[0,1,2],ex:'Three pigments: melanin (brown-black), carotene (yellow-orange), and hemoglobin (pink-red through the skin).'},
+{id:'B1-10',lv:1,type:'mc',q:'The most common skin cancer, which arises from the stratum basale, is:',opts:['Basal cell carcinoma','Melanoma','Squamous cell carcinoma','Kaposi sarcoma'],a:0,ex:'Basal cell carcinoma is the most common and usually highly curable. Squamous cell carcinoma arises from the stratum spinosum. Melanoma is the most dangerous.'},
+{id:'B1-11',lv:1,type:'type',q:'The pigment produced by melanocytes is ________.',ans:['melanin'],ex:'Melanocytes pass melanin to nearby keratinocytes, where it shields DNA from UV light.'},
+{id:'B2-01',lv:2,type:'mc',q:'The dermis has two layers:',opts:['Papillary and reticular','Basale and corneum','Visceral and parietal','Compact and spongy'],a:0,ex:'Papillary (thin, loose, superficial) and reticular (thick, dense irregular, deep).'},
+{id:'B2-02',lv:2,type:'mc',q:'Dermal papillae:',opts:['Anchor the epidermis to the dermis and form fingerprint ridges','Produce sweat','Store fat','Make melanin'],a:0,ex:'The finger-like projections increase contact area between the layers.'},
+{id:'B2-03',lv:2,type:'mc',q:'The fibers that give the dermis most of its strength are:',opts:['Collagen fibers','Elastic fibers','Keratin fibers','Muscle fibers'],a:0,ex:'Collagen gives strength. Elastin gives stretch and recoil.'},
+{id:'B2-04',lv:2,type:'mc',q:'The hypodermis (subcutaneous layer):',opts:['Is loose connective and adipose tissue that anchors skin, insulates, and stores fat','Is the outermost layer of skin','Contains the stratum basale','Is made of compact bone'],a:0,ex:'Strictly speaking, it’s beneath the skin rather than part of it.'},
+{id:'B2-05',lv:2,type:'match',q:'Match each gland to what it secretes:',pairs:[['Eccrine sweat gland','Watery sweat for cooling'],['Apocrine sweat gland','Thicker sweat into hair follicles in the armpit and groin'],['Sebaceous gland','Oily sebum'],['Ceruminous gland','Earwax']],ex:'Eccrine glands are everywhere and handle cooling. Apocrine glands become active at puberty.'},
+{id:'B2-06',lv:2,type:'mc',q:'The arrector pili is:',opts:['Smooth muscle that raises the hair (goose bumps)','A type of sweat gland','The root of the hair','A sensory receptor'],a:0,ex:'It’s controlled by the sympathetic nervous system.'},
+{id:'B2-07',lv:2,type:'multi',q:'Which are functions of the skin? Select all that apply.',opts:['Protection','Temperature regulation','Starting vitamin D synthesis','Sensation','Producing red blood cells'],a:[0,1,2,3],ex:'Red blood cells are made in red bone marrow, not skin.'},
+{id:'B2-08',lv:2,type:'mc',q:'Vitamin D synthesis begins when:',opts:['UV light converts a cholesterol-derived molecule in the skin','Melanin absorbs heat','Sebum reaches the surface','Sweat evaporates'],a:0,ex:'The liver and kidneys then convert it to the active form, which helps absorb calcium.'},
+{id:'B2-09',lv:2,type:'whatif',q:'What if the body overheats?',opts:['Dermal blood vessels dilate and eccrine sweating increases','Dermal blood vessels constrict','The arrector pili contract','Melanin production stops'],a:0,ex:'More blood near the surface releases heat, and evaporating sweat carries more away.'},
+{id:'B2-10',lv:2,type:'match',q:'Match each burn to the layers it damages:',pairs:[['First-degree','Epidermis only'],['Second-degree','Epidermis and part of the dermis'],['Third-degree','The full thickness of epidermis and dermis']],ex:'Second-degree burns are partial-thickness. Third-degree burns are full-thickness and often painless because nerve endings are destroyed.'},
+{id:'B2-11',lv:2,type:'type',q:'The oily secretion of sebaceous glands is called ________.',ans:['sebum'],ex:'Sebum softens skin and hair and slows water loss.'},
+{id:'B3-01',lv:3,type:'match',q:'Match each type of cartilage to where it’s found:',pairs:[['Hyaline cartilage','Covers joint surfaces (most common type)'],['Elastic cartilage','External ear and epiglottis'],['Fibrocartilage','Intervertebral discs and knee menisci']],ex:'Hyaline = smooth surfaces. Elastic = flexible shape. Fibrocartilage = resists compression.'},
+{id:'B3-02',lv:3,type:'match',q:'Match each bone cell to its job:',pairs:[['Osteoblast','Builds bone matrix'],['Osteocyte','Mature cell that maintains the matrix'],['Osteoclast','Breaks down (resorbs) bone'],['Osteogenic cell','Stem cell that becomes an osteoblast']],ex:'Memory trick: blasts build, clasts cut.'},
+{id:'B3-03',lv:3,type:'mc',q:'The structural unit of compact bone is the:',opts:['Osteon (Haversian system)','Trabecula','Sarcomere','Lacuna'],a:0,ex:'Osteons are concentric rings (lamellae) around a central canal.'},
+{id:'B3-04',lv:3,type:'mc',q:'The central (Haversian) canal contains:',opts:['Blood vessels and nerves','Red bone marrow','Cartilage','Synovial fluid'],a:0,ex:'Each osteon has its own blood supply running through the center.'},
+{id:'B3-05',lv:3,type:'mc',q:'Canaliculi are:',opts:['Tiny channels connecting lacunae, letting osteocytes exchange nutrients and wastes','Large cavities filled with marrow','The ends of long bones','Layers of the periosteum'],a:0,ex:'Osteocytes are trapped in hard matrix, so canaliculi are their lifeline.'},
+{id:'B3-06',lv:3,type:'mc',q:'Spongy bone is made of:',opts:['Trabeculae, with red marrow in the spaces between','Osteons packed tightly together','Hyaline cartilage','Dense regular connective tissue'],a:0,ex:'Trabeculae line up along lines of stress, giving strength without much weight.'},
+{id:'B3-07',lv:3,type:'mc',q:'The shaft of a long bone is the:',opts:['Diaphysis','Epiphysis','Metaphysis','Periosteum'],a:0,ex:'Diaphysis = shaft. Epiphysis = end.'},
+{id:'B3-08',lv:3,type:'mc',q:'Bone’s hardness comes mainly from:',opts:['Calcium phosphate mineral (hydroxyapatite)','Collagen fibers','Water','Elastin'],a:0,ex:'Minerals give hardness. Collagen gives flexibility and tensile strength.'},
+{id:'B3-09',lv:3,type:'whatif',q:'What if bone lost most of its collagen?',opts:['It would become brittle and break easily','It would bend like rubber','It would grow faster','Nothing would change'],a:0,ex:'Without collagen, bone is all mineral and shatters. Without minerals, it bends.'},
+{id:'B3-10',lv:3,type:'multi',q:'Which are functions of bone? Select all that apply.',opts:['Support','Protection','Blood cell formation','Mineral storage','Producing digestive enzymes'],a:[0,1,2,3],ex:'Bone also stores fat in yellow marrow and works with muscles for movement.'},
+{id:'B3-11',lv:3,type:'type',q:'Blood cell formation in red bone marrow is called ________.',ans:['hematopoiesis','hemopoiesis','haematopoiesis'],ex:'Hemato (blood) + poiesis (making).'},
+{id:'B3-12',lv:3,type:'mc',q:'The periosteum is:',opts:['A membrane covering the outer bone surface, except at joint surfaces','The marrow cavity','The cartilage at joint surfaces','A type of bone cell'],a:0,ex:'It contains osteogenic cells, nerves, and vessels, and anchors tendons and ligaments.'},
+{id:'B4-01',lv:4,type:'mc',q:'Intramembranous ossification forms:',opts:['Flat bones of the skull and the clavicles','Most long bones','The vertebrae','Hyaline cartilage'],a:0,ex:'Intramembranous: bone forms directly from a membrane. Endochondral: bone replaces a hyaline cartilage model (most bones).'},
+{id:'B4-02',lv:4,type:'mc',q:'Long bones grow in length at the:',opts:['Epiphyseal plate','Periosteum','Medullary cavity','Articular cartilage'],a:0,ex:'Cartilage keeps forming on the epiphysis side and gets replaced by bone on the diaphysis side.'},
+{id:'B4-03',lv:4,type:'order',q:'Put these epiphyseal plate zones in order, starting from the epiphysis side:',items:['Resting (reserve) cartilage','Proliferation','Hypertrophy','Calcification'],ex:'Cells rest, divide, enlarge, and then the matrix calcifies. Bone replaces it next to the diaphysis. Some texts count that last region as a fifth zone (ossification).'},
+{id:'B4-04',lv:4,type:'mc',q:'Bones grow in width (appositional growth) when:',opts:['Osteoblasts beneath the periosteum add bone to the outer surface','The epiphyseal plate thickens','Chondrocytes divide in the marrow','Osteoclasts add bone to the outer surface'],a:0,ex:'Meanwhile, osteoclasts widen the marrow cavity from inside.'},
+{id:'B4-05',lv:4,type:'mc',q:'Parathyroid hormone (PTH):',opts:['Raises blood calcium, partly by stimulating osteoclasts','Lowers blood calcium','Builds bone directly','Stops all bone remodeling'],a:0,ex:'PTH is released when blood calcium is low. It also increases calcium reabsorption in the kidneys and activates vitamin D.'},
+{id:'B4-06',lv:4,type:'mc',q:'Calcitonin:',opts:['Lowers blood calcium by inhibiting osteoclasts','Raises blood calcium','Activates vitamin D','Is made by the parathyroid glands'],a:0,ex:'It comes from the thyroid gland and is released when blood calcium is high. It matters more in children than adults.'},
+{id:'B4-07',lv:4,type:'multi',q:'Which support healthy bone? Select all that apply.',opts:['Vitamin D','Calcium','Weight-bearing exercise','Vitamin C','Long-term bed rest'],a:[0,1,2,3],ex:'Vitamin C is needed to make collagen. Lack of stress on bone, as in bed rest, leads to bone loss.'},
+{id:'B4-08',lv:4,type:'order',q:'Put the stages of fracture repair in order:',items:['A fracture hematoma (blood clot) forms','A fibrocartilaginous (soft) callus forms','A bony (hard) callus forms','The bone is remodeled'],ex:'Clot → soft callus → hard callus → remodeling.'},
+{id:'B4-09',lv:4,type:'whatif',q:'What if an astronaut spends months in near weightlessness?',opts:['Bone mass decreases','Bone mass increases','Bones grow longer','Nothing happens to bone'],a:0,ex:'Bone remodels in response to stress. With little loading, resorption outpaces deposition.'},
+{id:'B4-10',lv:4,type:'mc',q:'Osteoporosis is:',opts:['A condition where bone resorption outpaces deposition, leaving bones porous and fragile','An infection of bone','A cancer of cartilage','Excess bone growth'],a:0,ex:'It’s most common after menopause because estrogen helps restrain osteoclasts.'},
+{id:'B4-11',lv:4,type:'type',q:'When the epiphyseal plate is replaced by bone at the end of growth, it becomes the epiphyseal ________.',ans:['line'],ex:'The epiphyseal line is the adult remnant of the growth plate.'},
+{id:'B5-01',lv:5,type:'mc',q:'The adult skeleton typically has how many bones?',opts:['206','212','186','300'],a:0,ex:'Infants have more, which fuse during growth.'},
+{id:'B5-02',lv:5,type:'mc',q:'The axial skeleton includes:',opts:['The skull, vertebral column, and rib cage','The limbs','The pectoral and pelvic girdles','The hands and feet'],a:0,ex:'Axial = the central axis. Appendicular = the limbs and girdles.'},
+{id:'B5-03',lv:5,type:'multi',q:'Which bones belong to the appendicular skeleton? Select all that apply.',opts:['Scapula','Clavicle','Femur','Hip (coxal) bone','Sternum','Vertebrae'],a:[0,1,2,3],ex:'Girdles count as appendicular. The sternum and vertebrae are axial.'},
+{id:'B5-04',lv:5,type:'match',q:'Match each region to its number of vertebrae:',pairs:[['Cervical','7'],['Thoracic','12'],['Lumbar','5'],['Sacrum','5 fused']],ex:'Memory trick: breakfast at 7, lunch at 12, dinner at 5.'},
+{id:'B5-05',lv:5,type:'mc',q:'The axis (C2) allows you to:',opts:['Rotate your head side to side (“no”)','Nod your head (“yes”)','Bend your spine forward','Breathe more deeply'],a:0,ex:'The atlas pivots around the axis. Nodding happens mostly at the atlanto-occipital joint.'},
+{id:'B5-06',lv:5,type:'mc',q:'True ribs are:',opts:['Pairs 1–7, which attach directly to the sternum by their own costal cartilage','Pairs 8–12','Ribs with no cartilage','Only the floating ribs'],a:0,ex:'Pairs 8–12 are false ribs, and 11–12 are floating ribs.'},
+{id:'B5-07',lv:5,type:'match',q:'Match each bone to its location:',pairs:[['Humerus','Upper arm'],['Radius','Forearm, thumb side'],['Ulna','Forearm, little-finger side'],['Tibia','Weight-bearing bone of the leg'],['Fibula','Thin lateral bone of the leg']],ex:'Radius rotates around the ulna, and the tibia carries the body weight.'},
+{id:'B5-08',lv:5,type:'mc',q:'The pectoral girdle is made of the:',opts:['Clavicle and scapula','Two hip bones','Sternum and ribs','Humerus and ulna'],a:0,ex:'It attaches the upper limb to the axial skeleton.'},
+{id:'B5-09',lv:5,type:'mc',q:'The pelvic girdle is formed by the:',opts:['Two hip (coxal) bones','Clavicle and scapula','Femurs','Lumbar vertebrae'],a:0,ex:'Each hip bone forms from three fused bones: ilium, ischium, and pubis.'},
+{id:'B5-10',lv:5,type:'type',q:'The only bone that doesn’t form a joint with any other bone is the ________.',ans:['hyoid','hyoid bone'],ex:'The hyoid sits in the neck and is held by muscles and ligaments.'},
+{id:'B5-11',lv:5,type:'mc',q:'Fontanelles are:',opts:['Membrane-covered “soft spots” in an infant’s skull','Openings in the vertebrae','Fractures in the skull','Sinuses in the face'],a:0,ex:'They let the skull flex during birth and the brain grow. They close within about the first two years.'},
+{id:'B5-12',lv:5,type:'mc',q:'The patella is:',opts:['The kneecap','The heel bone','The shoulder blade','The collarbone'],a:0,ex:'It’s a sesamoid bone, which means it forms inside a tendon.'},
+{id:'B6-01',lv:6,type:'match',q:'Match each functional joint class to its movement:',pairs:[['Synarthrosis','Immovable'],['Amphiarthrosis','Slightly movable'],['Diarthrosis','Freely movable']],ex:'All synovial joints are diarthroses.'},
+{id:'B6-02',lv:6,type:'match',q:'Match each structural joint class to how the bones are joined:',pairs:[['Fibrous','Dense connective tissue (example: skull sutures)'],['Cartilaginous','Cartilage (example: pubic symphysis)'],['Synovial','A fluid-filled joint cavity (example: knee)']],ex:'Only synovial joints have a joint cavity.'},
+{id:'B6-03',lv:6,type:'multi',q:'Which are features of a synovial joint? Select all that apply.',opts:['Articular cartilage on the bone ends','An articular (joint) capsule','Synovial fluid','Bones fused together by bone tissue','Bones joined only by dense fibrous tissue'],a:[0,1,2],ex:'Synovial joints also usually have reinforcing ligaments, and some have bursae.'},
+{id:'B6-04',lv:6,type:'match',q:'Match each synovial joint type to an example:',pairs:[['Hinge','Elbow'],['Pivot','Atlas and axis (C1–C2)'],['Ball-and-socket','Hip or shoulder'],['Saddle','Base of the thumb'],['Plane','Between carpal bones']],ex:'The sixth type is condylar (condyloid), as in the knuckles.'},
+{id:'B6-05',lv:6,type:'mc',q:'Flexion:',opts:['Decreases the angle between bones','Increases the angle between bones','Moves a limb away from the midline','Rotates a bone around its long axis'],a:0,ex:'Bending your elbow is flexion. Straightening it is extension.'},
+{id:'B6-06',lv:6,type:'match',q:'Match each movement to its description:',pairs:[['Abduction','Moving away from the midline'],['Adduction','Moving toward the midline'],['Rotation','Turning around a bone’s long axis'],['Circumduction','Moving in a cone-shaped circle']],ex:'Memory trick: adduction “adds” the limb back to the body.'},
+{id:'B6-07',lv:6,type:'mc',q:'Supination of the forearm:',opts:['Turns the palm up (or forward)','Turns the palm down (or backward)','Bends the elbow','Moves the arm away from the body'],a:0,ex:'Supination: holding a bowl of soup. Pronation: palm down.'},
+{id:'B6-08',lv:6,type:'mc',q:'Dorsiflexion at the ankle:',opts:['Lifts the toes up toward the shin','Points the toes down','Turns the sole inward','Turns the sole outward'],a:0,ex:'Dorsiflexion: walking on your heels. Plantar flexion: standing on tiptoe.'},
+{id:'B6-09',lv:6,type:'type',q:'Standing on your tiptoes is ________ flexion of the ankle.',ans:['plantar'],ex:'Plantar refers to the sole of the foot.'},
+{id:'B6-10',lv:6,type:'whatif',q:'What if the anterior cruciate ligament (ACL) is torn?',opts:['The tibia can slide forward on the femur, making the knee unstable','The knee locks completely straight','The kneecap disappears','Nothing, because the ACL is not a stabilizer'],a:0,ex:'The ACL prevents the tibia from sliding forward relative to the femur.'},
+{id:'B6-11',lv:6,type:'mc',q:'A bursa is:',opts:['A fluid-filled sac that reduces friction between moving structures','A ligament','A type of cartilage','A bone cell'],a:0,ex:'Inflamed bursae cause bursitis.'},
+{id:'B6-12',lv:6,type:'mc',q:'Which joint has the greatest range of motion but the least stability?',opts:['Shoulder (glenohumeral) joint','Hip joint','Knee joint','Elbow joint'],a:0,ex:'Its socket is shallow. The hip trades some motion for a deep, stable socket.'},
+{id:'B7-01',lv:7,type:'match',q:'Match each muscle type to its features:',pairs:[['Skeletal','Striated, voluntary, multinucleated'],['Cardiac','Striated, involuntary, intercalated discs'],['Smooth','Not striated, involuntary, in walls of hollow organs']],ex:'Only skeletal muscle is under voluntary control.'},
+{id:'B7-02',lv:7,type:'order',q:'Put the levels of skeletal muscle structure in order, largest to smallest:',items:['Muscle','Fascicle','Muscle fiber (cell)','Myofibril','Myofilaments (actin and myosin)'],ex:'Bundles inside bundles, all the way down to the protein filaments.'},
+{id:'B7-03',lv:7,type:'mc',q:'A sarcomere is:',opts:['The contractile unit of a myofibril, from one Z disc to the next','A bundle of muscle fibers','The cell membrane of a muscle fiber','The neuromuscular junction'],a:0,ex:'Sarcomeres shortening, end to end, is what shortens the whole muscle.'},
+{id:'B7-04',lv:7,type:'mc',q:'Thick filaments are made mainly of:',opts:['Myosin','Actin','Troponin','Collagen'],a:0,ex:'Thick = myosin. Thin = actin, plus troponin and tropomyosin.'},
+{id:'B7-05',lv:7,type:'mc',q:'The sarcoplasmic reticulum stores:',opts:['Calcium ions (Ca²⁺)','ATP','Glycogen','Myoglobin'],a:0,ex:'Calcium released from the SR is the trigger for contraction.'},
+{id:'B7-06',lv:7,type:'mc',q:'Transverse (T) tubules:',opts:['Carry the action potential deep into the muscle fiber','Store calcium','Connect two muscle cells','Hold the myosin heads'],a:0,ex:'They let the signal reach every myofibril at once.'},
+{id:'B7-07',lv:7,type:'multi',q:'During contraction, which of these get shorter? Select all that apply.',opts:['The sarcomere','The I band','The H zone','The A band','The thick filaments themselves'],a:[0,1,2],ex:'Filaments slide past each other but don’t change length, so the A band (thick filament length) stays the same.'},
+{id:'B7-08',lv:7,type:'match',q:'Match each connective tissue layer to what it surrounds:',pairs:[['Epimysium','The whole muscle'],['Perimysium','A fascicle'],['Endomysium','Each muscle fiber']],ex:'Epi = upon (outside). Peri = around. Endo = within.'},
+{id:'B7-09',lv:7,type:'type',q:'The plasma membrane of a muscle fiber is the ________.',ans:['sarcolemma'],ex:'Sarco = flesh. Sarcolemma, sarcoplasm, sarcoplasmic reticulum, and sarcomere all share the prefix.'},
+{id:'B7-10',lv:7,type:'mc',q:'The regulatory proteins on the thin filament are:',opts:['Troponin and tropomyosin','Myosin and titin','Actin and collagen','Calcium and ATP'],a:0,ex:'At rest, tropomyosin blocks the myosin-binding sites on actin.'},
+{id:'B7-11',lv:7,type:'mc',q:'A motor unit is:',opts:['One motor neuron plus all the muscle fibers it controls','One muscle fiber','All the muscles of a limb','One sarcomere'],a:0,ex:'Small motor units allow fine control, as in the eye. Large ones allow power, as in the thigh.'},
+{id:'B8-01',lv:8,type:'order',q:'Put excitation-contraction coupling in order:',items:['Acetylcholine is released at the neuromuscular junction','Acetylcholine binds receptors and the sarcolemma depolarizes','The action potential spreads along the sarcolemma and down the T tubules','The sarcoplasmic reticulum releases Ca²⁺','Ca²⁺ binds troponin, and tropomyosin moves off the binding sites','Myosin heads bind actin and cross-bridge cycling begins'],ex:'Nerve signal → muscle action potential → calcium release → binding sites exposed → contraction.'},
+{id:'B8-02',lv:8,type:'order',q:'Put the cross-bridge cycle in order:',items:['The energized myosin head binds to actin, forming a cross-bridge','The power stroke pulls the thin filament toward the center of the sarcomere','ATP binds myosin, and the head detaches from actin','ATP is hydrolyzed, re-cocking the myosin head'],ex:'Attach, pull, detach, re-cock. The cycle repeats as long as Ca²⁺ and ATP are present.'},
+{id:'B8-03',lv:8,type:'mc',q:'In the cross-bridge cycle, a new ATP binding to myosin causes:',opts:['The myosin head to detach from actin','The power stroke','Calcium release from the SR','Tropomyosin to block actin'],a:0,ex:'ATP binding releases myosin from actin. Splitting that ATP then re-cocks the head.'},
+{id:'B8-04',lv:8,type:'whatif',q:'What if a muscle runs completely out of ATP, as after death?',opts:['Myosin heads stay attached to actin, and the muscle becomes rigid (rigor mortis)','The muscle relaxes completely','The muscle contracts faster','Calcium is pumped back into the SR'],a:0,ex:'Without ATP, myosin can’t detach from actin, so the cross-bridges lock in place.'},
+{id:'B8-05',lv:8,type:'mc',q:'A muscle fiber relaxes when:',opts:['Ca²⁺ is pumped back into the SR and tropomyosin covers the binding sites again','More ATP binds to actin','Acetylcholine accumulates','Sarcomeres lengthen on their own'],a:0,ex:'Pumping Ca²⁺ back into the SR also takes ATP.'},
+{id:'B8-06',lv:8,type:'mc',q:'The neurotransmitter at the neuromuscular junction is:',opts:['Acetylcholine','Norepinephrine','Dopamine','Serotonin'],a:0,ex:'Motor neurons release acetylcholine onto skeletal muscle fibers.'},
+{id:'B8-07',lv:8,type:'order',q:'Put the phases of a muscle twitch in order:',items:['Latent period','Contraction phase','Relaxation phase'],ex:'Latent: excitation-contraction coupling is underway but there’s no tension yet.'},
+{id:'B8-08',lv:8,type:'mc',q:'Fused (complete) tetanus happens when:',opts:['Stimuli come so fast that the muscle has no time to relax, giving a smooth, sustained contraction','A single stimulus produces one twitch','The muscle runs out of ATP','The motor neuron is cut'],a:0,ex:'Not the same as the disease tetanus, which is caused by a bacterial toxin.'},
+{id:'B8-09',lv:8,type:'match',q:'Match each energy source to its description:',pairs:[['Creatine phosphate','Fastest way to regenerate ATP, but runs out within seconds'],['Anaerobic glycolysis','Makes ATP quickly without oxygen and produces lactate'],['Aerobic respiration','Makes the most ATP, needs oxygen, slower to ramp up']],ex:'Sprints lean on the first two. Endurance work runs mostly on aerobic respiration.'},
+{id:'B8-10',lv:8,type:'mc',q:'Muscles increase their force by recruitment, which means:',opts:['Activating more motor units','Making each sarcomere longer','Adding new muscle fibers instantly','Releasing less calcium'],a:0,ex:'The nervous system grades force by recruiting more (and larger) motor units, and by firing them faster.'},
+{id:'B8-11',lv:8,type:'type',q:'The enzyme that breaks down acetylcholine at the neuromuscular junction is ________.',ans:['acetylcholinesterase','AChE'],ex:'Acetylcholinesterase clears ACh so the muscle fiber can stop being stimulated.'},
+{id:'B8-12',lv:8,type:'mc',q:'In an isometric contraction:',opts:['Tension develops but the muscle doesn’t change length','The muscle shortens at a constant tension','The muscle lengthens while contracting','No tension develops'],a:0,ex:'Holding a plank or pushing against a wall is isometric. Lifting a weight is isotonic.'},
+{id:'B8-13',lv:8,type:'whatif',q:'What if botulinum toxin blocks acetylcholine release at the neuromuscular junction?',opts:['The muscle can’t be stimulated, causing weakness or flaccid paralysis','The muscle contracts continuously','The muscle contracts faster','Nothing, because muscles don’t need acetylcholine'],a:0,ex:'No acetylcholine means no muscle action potential, so the muscle can’t contract.'}
+
+];
+function trackOf(q){return q.id[0]==='A'?1:q.id[0]==='B'?2:3;}
+Q.forEach(q=>{q.tr=trackOf(q);});
+function TL(tr){return TRACKS[tr-1].levels;}
+function levelOf(q){return TL(q.tr)[q.lv-1];}
+
+// ---------- engine (pure functions) ----------
+const DAY = 86400000;
+const INTERVAL = [0,0,1,3,7,14];   // days until due, indexed by box 0..5
+const UNLOCK = 0.8;                 // share of a level answered correctly once to open the next
+const SESSION_SIZE = 12;
+const MAX_DUE_FIRST = 8;            // leave room for new questions so progress keeps moving
+// survey list follows the BIO 216 unit order
+const TOPICS=[
+  {k:'org',t:'Introduction, terminology, and homeostasis'},{k:'chem',t:'Chemistry basics'},{k:'prot',t:'Protein synthesis and the cell life cycle'},
+  {k:'cell',t:'Plasma membrane and organelles'},{k:'tis',t:'Tissues'},{k:'skin',t:'Integumentary system'},
+  {k:'bone',t:'Cartilage and bone: structure and growth'},{k:'skel',t:'Skeletal anatomy'},{k:'join',t:'Joints and joint movements'},
+  {k:'mtis',t:'Muscle tissue and physiology'},{k:'msys',t:'Muscular system anatomy'},{k:'nerv',t:'Neural organization and neurophysiology'},
+  {k:'refl',t:'Reflexes and spinal nerves'},{k:'spin',t:'Spinal cord'},{k:'brain',t:'Brain and cranial nerves'},
+  {k:'integ',t:'Nervous system integration'},{k:'vis',t:'Special senses: vision'},{k:'hear',t:'Special senses: hearing and balance'},
+  {k:'ans',t:'Autonomic nervous system'}];
+const TOPIC_T={cns:'Brain and spinal cord',sens:'Special senses'};TOPICS.forEach(x=>TOPIC_T[x.k]=x.t); // legacy keys still decode
+const PLACE_PER=2, PLACE_TOP=3, TESTOUT_N=5, TESTOUT_PASS=4, FOCUS_SIZE=12, BOOST=2;
+
+function dayKey(t){const d=new Date(t);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');}
+function freshUser(name){return {name:name,cards:{},streak:0,last:null,daily:{},breakUsed:null,flags:[],group:[],sessions:0,openTo:{},placed:{},track:1,trouble:[],troubleOther:'',surveyDone:false,onboarded:false};}
+// bring older saved users forward (single-track versions stored numbers/booleans)
+function migrateUser(u){
+  ['flags','group','trouble'].forEach(f=>{if(!Array.isArray(u[f]))u[f]=[];});
+  if(typeof u.openTo!=='object'||u.openTo===null)u.openTo={3:u.openTo||1};
+  if(typeof u.placed!=='object'||u.placed===null){const had=u.placed===true||Object.keys(u.cards||{}).length>0;u.placed=had?{3:true}:{};}
+  if(!u.track)u.track=Object.keys(u.cards||{}).length?3:1;
+  if(u.surveyDone===undefined)u.surveyDone=false;
+  if(typeof u.daily!=='object'||u.daily===null)u.daily={};
+  if(u.breakUsed===undefined)u.breakUsed=null;
+  if(u.onboarded===undefined)u.onboarded=false;
+  return u;
+}
+function qsOf(tr,lv){return Q.filter(q=>q.tr===tr&&(lv===undefined||q.lv===lv));}
+function lvStats(u,tr,lv){
+  let right=0,mastered=0;const qs=qsOf(tr,lv);
+  qs.forEach(q=>{const c=u.cards[q.id];if(c&&c.r>0)right++;if(c&&c.b>=3)mastered++;});
+  return {total:qs.length,right:right,mastered:mastered};
+}
+function unlockedMax(u,tr){
+  const L=TL(tr),open=Math.min(L.length,(u.openTo&&u.openTo[tr])||1);
+  let m=1;
+  for(let lv=1;lv<L.length;lv++){const s=lvStats(u,tr,lv);if(lv<open||s.right/s.total>=UNLOCK)m=lv+1;else break;}
+  return Math.max(m,open);
+}
+function missRate(u,tr,lv){
+  let r=0,w=0;qsOf(tr,lv).forEach(q=>{const c=u.cards[q.id];if(c){r+=c.r;w+=c.w;}});
+  return {attempts:r+w,rate:(r+w)?w/(r+w):0};
+}
+function weakestLevel(u,tr){
+  const max=unlockedMax(u,tr);let best=null;
+  for(let lv=1;lv<=max;lv++){const m=missRate(u,tr,lv);if(m.attempts>=4&&m.rate>=0.25&&(!best||m.rate>best.rate))best={lv:lv,rate:m.rate};}
+  return best?best.lv:null;
+}
+function dueList(u,now,tr){
+  const max=unlockedMax(u,tr),mr={};
+  for(let lv=1;lv<=max;lv++)mr[lv]=missRate(u,tr,lv).rate;
+  return qsOf(tr).filter(q=>q.lv<=max&&u.cards[q.id]&&u.cards[q.id].due<=now)
+    .sort((a,b)=>(u.cards[a.id].b-u.cards[b.id].b)||(mr[b.lv]-mr[a.lv])||(a.lv-b.lv));
+}
+function buildSession(u,now,tr,size){
+  size=size||SESSION_SIZE;
+  const max=unlockedMax(u,tr),due=dueList(u,now,tr),taken={},out=[];
+  const add=q=>{if(!taken[q.id]&&out.length<size){taken[q.id]=1;out.push(q);}};
+  due.slice(0,MAX_DUE_FIRST).forEach(add);
+  const wk=weakestLevel(u,tr);
+  if(wk)qsOf(tr,wk).filter(q=>u.cards[q.id]&&u.cards[q.id].w>0&&u.cards[q.id].b<=2&&u.cards[q.id].due>now)
+    .sort((a,b)=>u.cards[b.id].w-u.cards[a.id].w).slice(0,BOOST).forEach(add);
+  const start=Math.min(max,(u.openTo&&u.openTo[tr])||1),rank=lv=>lv>=start?lv:lv+100;
+  qsOf(tr).filter(q=>q.lv<=max&&!u.cards[q.id]).sort((a,b)=>rank(a.lv)-rank(b.lv)).forEach(add);
+  due.slice(MAX_DUE_FIRST).forEach(add);
+  return out.map(q=>q.id);
+}
+function buildFocus(u,tr,lv,now,size){
+  size=size||FOCUS_SIZE;
+  const qs=qsOf(tr,lv),c=id=>u.cards[id];
+  const due=qs.filter(q=>c(q.id)&&c(q.id).due<=now).sort((a,b)=>c(a.id).b-c(b.id).b);
+  const fresh=qs.filter(q=>!c(q.id));
+  const rest=qs.filter(q=>c(q.id)&&c(q.id).due>now).sort((a,b)=>(c(a.id).b-c(b.id).b)||(c(a.id).due-c(b.id).due));
+  return due.concat(fresh,rest).slice(0,size).map(q=>q.id);
+}
+function pickRandom(arr,n,rand){rand=rand||Math.random;const b=arr.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(rand()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b.slice(0,n);}
+function buildTestOut(tr,lv,rand){return pickRandom(qsOf(tr,lv),TESTOUT_N,rand).map(q=>q.id);}
+function placementFor(tr,lv,rand){return pickRandom(qsOf(tr,lv),PLACE_PER,rand).map(q=>q.id);}
+function placementResult(res){
+  let open=1;
+  for(let lv=1;lv<=PLACE_TOP;lv++){const r=res.filter(x=>x.lv===lv);if(r.length===PLACE_PER&&r.every(x=>x.ok))open=lv+1;else break;}
+  return open;
+}
+function placementNext(res){
+  const last=res.length?res[res.length-1].lv:0;
+  if(!last)return 1;
+  const r=res.filter(x=>x.lv===last);
+  if(r.length<PLACE_PER)return -1;
+  if(r.every(x=>x.ok)&&last<PLACE_TOP)return last+1;
+  return 0;
+}
+function testOutPassed(res){return res.filter(x=>x.ok).length>=TESTOUT_PASS;}
+function grade(u,id,ok,now){
+  const c=u.cards[id]||{b:1,r:0,w:0,due:now};
+  if(ok){c.b=Math.min(5,c.b+1);c.r++;}else{c.b=1;c.w++;}
+  c.due=now+INTERVAL[c.b]*DAY;
+  u.cards[id]=c;
+  return c;
+}
+// streak: a day counts once DAILY_MIN questions are answered; one missed day is forgiven per BREAK_EVERY days
+const DAILY_MIN=5, BREAK_EVERY=7;
+function dayNum(key){const p=key.split('-').map(Number);return Math.round(new Date(p[0],p[1]-1,p[2]).getTime()/DAY);}
+function breakAvailable(u,missedKey){return !u.breakUsed||dayNum(missedKey)-dayNum(u.breakUsed)>=BREAK_EVERY;}
+function qualifyDay(u,now){
+  const today=dayKey(now);if(u.last===today)return false;
+  const gap=u.last?dayNum(today)-dayNum(u.last):Infinity;
+  if(gap===1)u.streak=(u.streak||0)+1;
+  else if(gap===2&&breakAvailable(u,dayKey(now-DAY))){u.streak=(u.streak||0)+1;u.breakUsed=dayKey(now-DAY);}
+  else u.streak=1;
+  u.last=today;return true;
+}
+function countAnswer(u,now){
+  const k=dayKey(now);u.daily=u.daily||{};u.daily[k]=(u.daily[k]||0)+1;
+  const cutoff=dayNum(k)-30;Object.keys(u.daily).forEach(d=>{if(dayNum(d)<cutoff)delete u.daily[d];});
+  return u.daily[k]===DAILY_MIN?qualifyDay(u,now):false;
+}
+function liveStreak(u,now){
+  if(!u.last)return 0;const gap=dayNum(dayKey(now))-dayNum(u.last);
+  if(gap<=1)return u.streak;
+  if(gap===2&&breakAvailable(u,dayKey(now-DAY)))return u.streak;
+  return 0;
+}
+function streakStatus(u,now){
+  const today=dayKey(now),done=(u.daily&&u.daily[today])||0,gap=u.last?dayNum(today)-dayNum(u.last):null;
+  return {done:done,need:DAILY_MIN,banked:u.last===today,atRisk:gap===2&&breakAvailable(u,dayKey(now-DAY)),breakReady:breakAvailable(u,today)};
+}
+function masteredTotal(u,tr){return Q.filter(q=>(tr===undefined||q.tr===tr)&&u.cards[q.id]&&u.cards[q.id].b>=3).length;}
+function trackTotal(tr){return qsOf(tr).length;}
+function shareObj(u,now){const k=u.track||1;return {v:1,n:u.name,m:masteredTotal(u),t:Q.length,s:liveStreak(u,now),k:k,l:unlockedMax(u,k),d:dayKey(now),tr:(u.trouble||[]).slice(0,3)};}
+function encodeShare(o){return 'AP1-'+btoa(unescape(encodeURIComponent(JSON.stringify(o))));}
+function validShare(o){
+  if(!o||o.v!==1||typeof o.n!=='string'||!o.n.trim())return false;
+  if(!Number.isSafeInteger(o.t)||o.t<1||!Number.isSafeInteger(o.m)||o.m<0||o.m>o.t)return false;
+  if(!Number.isSafeInteger(o.s)||o.s<0||!Number.isSafeInteger(o.l)||o.l<1)return false;
+  if(o.k!==undefined&&(!Number.isInteger(o.k)||o.k<1||o.k>TRACKS.length))return false;
+  if(typeof o.d!=='string'||!/^\d{4}-\d{2}-\d{2}$/.test(o.d))return false;
+  if(o.tr!==undefined&&(!Array.isArray(o.tr)||o.tr.length>3||
+    !o.tr.every(k=>typeof k==='string'&&Object.prototype.hasOwnProperty.call(TOPIC_T,k))))return false;
+  return true;
+}
+function decodeCodes(text){
+  const out=[];const re=/AP1-[A-Za-z0-9+/=]+/g;let m;
+  while((m=re.exec(text))){
+    try{
+      const o=JSON.parse(decodeURIComponent(escape(atob(m[0].slice(4)))));
+      if(validShare(o))out.push(o);
+    }catch(e){}
+  }
+  return out;
+}
+function mergeGroup(list,incoming){
+  const by=new Map();
+  list.concat(incoming).filter(validShare).forEach(o=>{
+    const k=o.n.trim().toLowerCase();
+    const previous=by.get(k);
+    if(!previous||o.d>=previous.d)by.set(k,o);
+  });
+  return [...by.values()].sort((a,b)=>(b.m-a.m)||(b.s-a.s)||a.n.localeCompare(b.n));
+}
+function troubleTally(rows){
+  const c={};rows.forEach(o=>(Array.isArray(o.tr)?o.tr:[]).forEach(k=>{if(TOPIC_T[k])c[k]=(c[k]||0)+1;}));
+  return Object.keys(c).map(k=>({k:k,t:TOPIC_T[k],n:c[k]})).sort((a,b)=>(b.n-a.n)||a.t.localeCompare(b.t));
+}
+function isOrderRight(picked){return picked.every((v,i)=>v===i);}
+function norm(s){return String(s).toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,'').replace(/\b(the|a|an)\b/g,'').replace(/[^a-z0-9]/g,'');}
+function lev(a,b){const m=a.length,n=b.length;let p=Array.from({length:n+1},(x,j)=>j);
+  for(let i=1;i<=m;i++){const c=[i];for(let j=1;j<=n;j++)c[j]=Math.min(p[j]+1,c[j-1]+1,p[j-1]+(a[i-1]===b[j-1]?0:1));p=c;}return p[n];}
+function checkTyped(q,input){
+  const n=norm(input);if(!n)return {ok:false};
+  for(const a of q.ans){const na=norm(a);if(n===na)return {ok:true,exact:true};}
+  for(const a of q.ans){const na=norm(a);if(na.length>=6&&lev(n,na)<=1)return {ok:true,exact:false,want:a};}
+  return {ok:false};
+}
+function checkMulti(q,chosen){const s=new Set(chosen);return s.size===q.a.length&&q.a.every(i=>s.has(i));}
+function checkMatch(chosen){return chosen.every((v,i)=>v===i);}
+
+// ---------- storage ----------
+const KEY='ap1nt:';
+const mem={};
+function sget(k){try{const v=localStorage.getItem(k);return v===null?null:JSON.parse(v);}catch(e){return mem[k]===undefined?null:mem[k];}}
+function sset(k,v){mem[k]=v;try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+function loadUser(name){const u=sget(KEY+'u:'+name.toLowerCase());return u?migrateUser(u):null;}
+function saveUser(u){sset(KEY+'u:'+u.name.toLowerCase(),u);}
+function userNames(){return sget(KEY+'names')||[];}
+
+// ---------- UI ----------
+if(typeof document!=='undefined'){
+const $=id=>document.getElementById(id);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const QBY={};Q.forEach(q=>QBY[q.id]=q);
+let U=null,S=null,pickT=[];
+const TR=()=>U.track||1;
+
+function show(v){['setup','guide','survey','placeintro','home','session','summary','share','group','flags'].forEach(x=>$('v-'+x).classList.toggle('hidden',x!==v));window.scrollTo(0,0);}
+function shuffle(a){const b=a.slice();for(let i=b.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]];}return b;}
+
+function setup(){
+  show('setup');$('nameIn').value='';
+  const names=userNames();
+  $('existing').innerHTML=names.length?'<p class="small muted">Or continue as:</p><div class="row" style="flex-wrap:wrap">'+
+    names.map(n=>'<button class="btn ghost" style="flex:0 0 auto;width:auto" data-name="'+esc(n)+'">'+esc(n)+'</button>').join('')+'</div>':'';
+}
+function enter(name){
+  name=name.trim().replace(/\s+/g,' ');if(!name)return;
+  U=loadUser(name)||freshUser(name);saveUser(U);
+  const names=userNames();if(!names.some(n=>n.toLowerCase()===name.toLowerCase())){names.push(name);sset(KEY+'names',names);}
+  sset(KEY+'cur',U.name);route();
+}
+function needsPlacement(){const tr=TR();return !U.placed[tr]&&!qsOf(tr).some(q=>U.cards[q.id]);}
+function route(){
+  if(!U.onboarded)return guide(1,false);
+  if(!U.surveyDone)return survey();
+  if(needsPlacement())return placeIntro();
+  home();
+}
+// ---- first-run guide
+let G={step:1,replay:false};
+const GUIDE_STEPS=3;
+function device(){
+  const ua=navigator.userAgent||'';
+  const ios=/iPhone|iPad|iPod/.test(ua)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+  const android=/Android/.test(ua);
+  const standalone=navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);
+  return {ios:ios,android:android,standalone:standalone};
+}
+function guide(step,replay){
+  G={step:step,replay:!!replay};
+  const d=device();let b='';
+  if(step===1){
+    b='<h1>Hi, '+esc(U.name)+'.</h1><p class="mt">A&amp;P Coach gives you short daily practice for Anatomy &amp; Physiology I, organized by lecture exam.</p>'+
+      '<p>Three quick steps and you’re in. It takes about two minutes.</p>';
+  }else if(step===2){
+    if(d.standalone){
+      b='<h1>You’re set up.</h1><p class="mt">You opened A&amp;P Coach from your home screen, which is exactly right. Your progress saves here.</p>';
+    }else if(d.ios){
+      b='<h1>Put it on your home screen</h1><p class="mt">Do this first so your progress lands in the right place.</p><ol class="steps">'+
+        '<li>In Safari, tap the <b>Share</b> button (the square with an up arrow).</li>'+
+        '<li>Scroll down and tap <b>Add to Home Screen</b>.</li>'+
+        '<li>Tap <b>Add</b>.</li>'+
+        '<li>Close this tab and open <b>A&amp;P Coach</b> from your new icon.</li></ol>'+
+        '<p class="note">On iPhone, the home-screen icon keeps its own progress, separate from Safari. Start from the icon and keep using the icon. If you opened this link inside a text or social app, open it in Safari first.</p>';
+    }else if(d.android){
+      b='<h1>Put it on your home screen</h1><p class="mt">Do this first so it’s one tap away every day.</p><ol class="steps">'+
+        '<li>In Chrome, tap the <b>menu</b> (⋮) at the top right.</li>'+
+        '<li>Tap <b>Add to Home screen</b> (it may say <b>Install app</b>).</li>'+
+        '<li>Tap <b>Add</b>.</li>'+
+        '<li>Open <b>A&amp;P Coach</b> from your new icon.</li></ol>'+
+        '<p class="note">Your progress is saved in this browser on this phone. Keep using the same phone and browser.</p>';
+    }else{
+      b='<h1>Save this page</h1><p class="mt">Bookmark it so you can find it again: <b>Ctrl+D</b> on Windows or <b>⌘+D</b> on a Mac.</p>'+
+        '<p class="note">For daily practice, open the same link on your phone and add it to your home screen. Progress doesn’t move between devices, so pick the one you’ll use most.</p>';
+    }
+  }else{
+    b='<h1>How it works</h1><ol class="steps">'+
+      '<li><b>Pick your exam.</b> Exam 1, 2, or 3, each with its own levels.</li>'+
+      '<li><b>Do a short session.</b> About 12 questions. Missed ones come back sooner, and ones you know come back later.</li>'+
+      '<li><b>Open new levels.</b> Get 80% of a level right to open the next, or take a short test to skip ahead.</li>'+
+      '<li><b>Keep your streak.</b> Answer at least '+DAILY_MIN+' questions a day. You get one missed day per week without losing it.</li>'+
+      '<li><b>Study with friends.</b> Share your score code in your group chat and compare standings.</li></ol>';
+  }
+  $('gBody').innerHTML=b;
+  $('gDots').innerHTML=Array.from({length:GUIDE_STEPS},(x,i)=>'<i class="'+(i<step?'on':'')+'"></i>').join('');
+  $('gBack').classList.toggle('hidden',step===1);
+  $('gNext').textContent=step<GUIDE_STEPS?'Next →':(G.replay?'Done':'Let’s go →');
+  $('gSkip').parentElement.classList.toggle('hidden',G.replay);
+  show('guide');
+}
+function guideDone(){U.onboarded=true;saveUser(U);if(G.replay)home();else route();}
+function placeIntro(){
+  const T=TRACKS[TR()-1];
+  $('placeTitle').textContent='Quick check: '+T.name;
+  $('placeText').textContent='Up to 6 questions from '+T.name+' ('+T.sub.toLowerCase()+') to find your starting level. If you already know the basics, you’ll skip ahead.';
+  show('placeintro');
+}
+function survey(){
+  pickT=(U.trouble||[]).filter(k=>TOPICS.some(x=>x.k===k)).slice(0,3);$('otherIn').value=U.troubleOther||'';
+  renderTopics();show('survey');
+}
+function renderTopics(){
+  $('topicList').innerHTML=TOPICS.map(x=>{const p=pickT.indexOf(x.k);
+    return '<button class="topic'+(p>=0?' on':'')+'" data-topic="'+x.k+'" aria-pressed="'+(p>=0)+'"><span>'+esc(x.t)+'</span><span class="n">'+(p>=0?p+1:'')+'</span></button>';}).join('');
+  $('saveSurvey').disabled=!(pickT.length||$('otherIn').value.trim());
+  $('saveSurvey').textContent=pickT.length?'Save my '+pickT.length+' topic'+(pickT.length===1?'':'s'):'Save';
+}
+function axonSvg(tr,max){
+  const L=TL(tr),x0=14,x1=326,y=28,n=L.length,step=(x1-x0)/(n-1),r=n>6?7:9,gap=n>6?9:12;
+  let s='<line x1="'+x0+'" y1="'+y+'" x2="'+x1+'" y2="'+y+'" stroke="var(--line)" stroke-width="4" stroke-linecap="round"/>';
+  for(let i=0;i<n-1;i++){const a=x0+i*step+gap,w=step-2*gap,open=(i+2)<=max;
+    s+='<rect x="'+a+'" y="'+(y-7)+'" width="'+w+'" height="14" rx="7" fill="'+(open?'var(--myelin-soft)':'var(--surface)')+'" stroke="'+(open?'var(--myelin)':'var(--line)')+'" stroke-width="1.5"/>';}
+  L.forEach((Lv,i)=>{const cx=x0+i*step,st=lvStats(U,tr,Lv.n),done=st.right/st.total>=UNLOCK,open=Lv.n<=max;
+    const stroke=done?'var(--signal)':open?'var(--myelin)':'var(--lock)';
+    s+='<circle cx="'+cx+'" cy="'+y+'" r="'+r+'" fill="'+(done?'var(--signal)':'var(--surface)')+'" stroke="'+stroke+'" stroke-width="2.5"/>';
+    s+='<text x="'+cx+'" y="'+(y+24)+'" text-anchor="middle" font-size="10" fill="var(--muted)" font-family="inherit">'+Lv.n+'</text>';});
+  const endX=x0+(max-1)*step;
+  if(max>1)s+='<circle class="pulse" r="5" fill="var(--signal)"><animate attributeName="cx" from="'+x0+'" to="'+endX+'" dur="1.4s" fill="freeze"/><animate attributeName="opacity" values="0;1;1;0" dur="1.4s" fill="freeze"/><set attributeName="cy" to="'+y+'"/></circle>';
+  return s;
+}
+function home(){
+  const now=Date.now(),tr=TR(),L=TL(tr),max=unlockedMax(U,tr),due=dueList(U,now,tr).length;
+  $('who').textContent=U.name;
+  $('tracks').innerHTML=TRACKS.map(T=>{const d=dueList(U,now,T.n).length;
+    return '<button class="trk'+(T.n===tr?' on':'')+'" data-track="'+T.n+'" aria-pressed="'+(T.n===tr)+'"><b>'+esc(T.name)+'</b><span>'+esc(T.sub)+(d?', '+d+' due':'')+'</span></button>';}).join('');
+  $('stStreak').textContent=liveStreak(U,now);
+  const ss=streakStatus(U,now);
+  $('todayLine').innerHTML=(ss.banked?'<span><b>Today counts.</b> Streak day saved.</span>':'<span>Today: <b>'+Math.min(ss.done,ss.need)+' of '+ss.need+'</b> questions for your streak</span>')+
+    (ss.atRisk&&!ss.banked?'<span>You missed yesterday. Finish today to use your break and keep the streak.</span>':'<span>Weekly break: <b>'+(ss.breakReady?'available':'used')+'</b></span>');$('stMastered').textContent=masteredTotal(U,tr)+'/'+trackTotal(tr);$('stDue').textContent=due;
+  $('axonSvg').innerHTML=axonSvg(tr,max);
+  $('axonCap').textContent=max<L.length?'Signal has reached level '+max+' of '+L.length+'. Get '+Math.round(UNLOCK*100)+'% of a level right to open the next one.':'All '+L.length+' levels open. Keep reviewing to master them.';
+  $('levels').innerHTML=L.map((Lv,ix)=>{const st=lvStats(U,tr,Lv.n),done=st.right/st.total>=UNLOCK,open=Lv.n<=max;
+    const pct=Math.round(st.right/st.total*100);
+    const act=open?'<button class="lvact" data-focus="'+Lv.n+'">Focus on this level</button>':
+      (Lv.n===max+1?'<button class="lvact test" data-test="'+Lv.n+'">Test out ('+TESTOUT_PASS+' of '+TESTOUT_N+' to open)</button>':'');
+    const head=(ix===0||L[ix-1].u!==Lv.u)?'<li class="unit-h">'+esc(Lv.u)+'</li>':'';
+    return head+'<li class="'+(done?'done':open?'open':'locked')+'"><span class="lvnum">'+Lv.n+'</span><div><b>'+esc(Lv.t)+'</b><div class="small muted">'+
+      (open?esc(Lv.d):'Opens at '+Math.round(UNLOCK*100)+'% on level '+(Lv.n-1))+'</div>'+(open?'<div class="bar"><i style="width:'+pct+'%"></i></div>':'')+
+      act+'</div><span class="pct">'+(open?pct+'%':'')+'</span></li>';}).join('');
+  const ids=buildSession(U,now,tr);
+  $('go').textContent=ids.length?'Start today’s '+TRACKS[tr-1].name+' session':'Practice anyway';
+  $('go').dataset.practice=ids.length?'':'1';
+  show('home');
+}
+const MODE_LABEL={normal:'',practice:' (practice)',focus:' (focus)',testout:' (test out)',placement:' (quick check)'};
+function startSession(mode,lv){
+  const now=Date.now(),tr=TR();let ids;
+  if(mode==='focus')ids=buildFocus(U,tr,lv,now);
+  else if(mode==='testout')ids=buildTestOut(tr,lv);
+  else if(mode==='placement')ids=placementFor(tr,1);
+  else{ids=buildSession(U,now,tr);mode='normal';
+    if(!ids.length){const max=unlockedMax(U,tr);ids=shuffle(qsOf(tr).filter(q=>q.lv<=max&&U.cards[q.id]).map(q=>q.id)).slice(0,10);mode='practice';}}
+  if(!ids.length)return;
+  S={ids:ids,i:0,right:0,answered:0,requeued:{},mode:mode,lv:lv||0,tr:tr,res:[],practice:mode==='practice',startMax:unlockedMax(U,tr)};
+  show('session');renderQ();
+}
+function renderQ(){
+  const q=QBY[S.ids[S.i]];
+  $('pCount').textContent=S.mode==='placement'?'Quick check: question '+(S.i+1)+' of up to '+(PLACE_PER*PLACE_TOP):'Question '+(S.i+1)+' of '+S.ids.length+MODE_LABEL[S.mode];
+  const lv=levelOf(q);
+  const TAGS={whatif:'What if…',order:'Put in order',multi:'Select all that apply',match:'Match',type:'Fill in the blank'};
+  let h='<span class="tag'+(q.type==='whatif'?' whatif':'')+'">'+(TAGS[q.type]||'Level '+q.lv+': '+esc(lv.t))+'</span>';
+  h+='<p class="qtext">'+esc(q.q)+'</p>';
+  if(q.type==='order'){
+    let ord=shuffle(q.items.map((t,i)=>i));let guard=0;while(isOrderRight(ord)&&guard++<10)ord=shuffle(ord);
+    S.ord=ord;S.pick=[];
+    h+='<p class="small muted">Tap the steps in order. Tap again to undo.</p><div class="opts" id="opts">'+
+      ord.map((oi,k)=>'<button class="opt" data-k="'+k+'"><span class="n"></span><span>'+esc(q.items[oi])+'</span></button>').join('')+
+      '</div><button class="btn mt" id="checkOrder" disabled>Check order</button>';
+  }else if(q.type==='match'){
+    const rights=shuffle(q.pairs.map((p,i)=>i));S.rights=rights;
+    h+='<div id="mrows">'+q.pairs.map((p,i)=>'<div class="mrow" data-i="'+i+'"><b>'+esc(p[0])+'</b><select data-i="'+i+'" aria-label="Match for '+esc(p[0])+'"><option value="">Choose…</option>'+
+      rights.map(ri=>'<option value="'+ri+'">'+esc(q.pairs[ri][1])+'</option>').join('')+'</select></div>').join('')+'</div>'+
+      '<button class="btn mt" id="checkMatch" disabled>Check matches</button>';
+  }else if(q.type==='type'){
+    h+='<input type="text" id="typeIn" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Your answer"><button class="btn mt" id="checkType" disabled>Check answer</button>';
+  }else{
+    const map=shuffle(q.opts.map((t,i)=>i));S.map=map;S.sel=[];
+    h+=(q.type==='multi'?'<p class="small muted">Select every correct answer, then check.</p>':'')+
+      '<div class="opts" id="opts">'+map.map((oi,k)=>'<button class="opt'+(q.type==='multi'?' check':'')+'" data-k="'+k+'"><span class="n">'+String.fromCharCode(65+k)+'</span><span>'+esc(q.opts[oi])+'</span></button>').join('')+'</div>'+
+      (q.type==='multi'?'<button class="btn mt" id="checkMulti" disabled>Check answer</button>':'');
+  }
+  h+='<div id="fb"></div>';
+  $('qcard').innerHTML=h;
+  if(q.type==='type'){const ti=$('typeIn');ti.focus();ti.addEventListener('input',()=>{$('checkType').disabled=!ti.value.trim();});
+    ti.addEventListener('keydown',e=>{if(e.key==='Enter'&&ti.value.trim()&&!$('checkType').disabled)$('checkType').click();});}
+  if(q.type==='match')document.querySelectorAll('#mrows select').forEach(sel=>sel.addEventListener('change',()=>{
+    $('checkMatch').disabled=[...document.querySelectorAll('#mrows select')].some(x=>x.value==='');}));
+}
+function answer(ok,q){
+  S.answered++;if(ok)S.right++;S.res.push({lv:q.lv,ok:ok});
+  if(countAnswer(U,Date.now()))S.banked=true;
+  const requeue=(S.mode==='normal'||S.mode==='focus')&&!ok&&!S.requeued[q.id];
+  if(!S.practice){grade(U,q.id,ok,Date.now());if(requeue){S.requeued[q.id]=1;S.ids.push(q.id);}saveUser(U);}
+  if(S.mode==='placement'){const nx=placementNext(S.res);if(nx>0)placementFor(S.tr,nx).forEach(id=>S.ids.push(id));}
+  const flagged=U.flags.includes(q.id);
+  let body='<p>'+esc(q.ex)+'</p>';
+  if(q.type==='order'&&!ok)body='<p><b>Correct order:</b></p><ol>'+q.items.map(t=>'<li>'+esc(t)+'</li>').join('')+'</ol>'+body;
+  if(q.type==='type')body='<p><b>Answer:</b> '+esc(q.ans[0])+'</p>'+(S.typedNote?'<p>'+esc(S.typedNote)+'</p>':'')+body;
+  if(q.type==='multi'&&!ok)body='<p><b>All correct answers:</b> '+q.a.map(i=>esc(q.opts[i])).join('; ')+'</p>'+body;
+  $('fb').innerHTML='<div class="feedback'+(ok?'':' bad')+'"><h2>'+(ok?'Correct':'Not quite')+'</h2>'+body+
+    '<p class="src">'+esc(TRACKS[q.tr-1].name)+', topic: '+esc(levelOf(q).t)+(requeue?'. This one comes back later in the session.':'')+'</p>'+
+    '<div class="fb-actions"><button class="link" id="flagBtn">'+(flagged?'Unflag':'Flag as wrong or confusing')+'</button></div></div>'+
+    '<button class="btn mt" id="next">'+(S.i+1<S.ids.length?'Next':'Finish')+'</button>';
+  $('next').focus();
+}
+function next(){S.i++;if(S.i<S.ids.length)renderQ();else finish();}
+function finish(){
+  const now=Date.now(),tr=S.tr,L=TL(tr);let extra='';
+  if(S.mode==='placement'){U.placed[tr]=true;U.openTo[tr]=Math.max(U.openTo[tr]||1,placementResult(S.res));
+    const st=unlockedMax(U,tr);extra='<div class="toast">You start '+esc(TRACKS[tr-1].name)+' at level '+st+': '+esc(L[st-1].t)+'</div>';}
+  if(S.mode==='testout'){if(testOutPassed(S.res)){U.openTo[tr]=Math.max(U.openTo[tr]||1,S.lv);}
+    else extra='<div class="toast">Not yet: '+S.right+' of '+TESTOUT_N+'. You need '+TESTOUT_PASS+'. Keep working level '+(S.lv-1)+' or try again later.</div>';}
+  if(S.answered>0)U.sessions++;
+  saveUser(U);
+  $('sumScore').textContent=S.right+'/'+S.answered;
+  $('sumLine').textContent=S.answered?(S.practice?'Practice round. Scores here don’t change your schedule. ':'')+TRACKS[tr-1].name+' mastered: '+masteredTotal(U,tr)+' of '+trackTotal(tr)+'.':'No questions answered.';
+  const max=unlockedMax(U,tr);
+  $('sumToast').innerHTML=extra+(max>S.startMax&&S.mode!=='placement'?'<div class="toast">Level '+max+' unlocked: '+esc(L[max-1].t)+'</div>':'');
+  const ss=streakStatus(U,now);
+  $('sumStreak').textContent=S.banked?'Streak day saved. You’re at '+liveStreak(U,now)+' day'+(liveStreak(U,now)===1?'':'s')+'.':
+    (ss.banked?'':(ss.need-ss.done>0?'Answer '+(ss.need-ss.done)+' more question'+(ss.need-ss.done===1?'':'s')+' today to keep your streak.':''));
+  const tomorrow=dueList(U,now+DAY,tr).length;
+  $('sumNext').textContent=tomorrow?tomorrow+' '+TRACKS[tr-1].name+' question'+(tomorrow===1?'':'s')+' will be due by tomorrow.':'';
+  S=null;show('summary');
+}
+function copyText(text,msgEl){
+  const done=()=>{msgEl.textContent='Copied.';};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(done,()=>fallback());else fallback();
+  function fallback(){const t=document.createElement('textarea');t.value=text;document.body.appendChild(t);t.select();
+    try{document.execCommand('copy');done();}catch(e){msgEl.textContent='Select the text and copy it manually.';}t.remove();}
+}
+function renderGroup(){
+  const now=Date.now();
+  const rows=mergeGroup(U.group,[shareObj(U,now)]);
+  const where=o=>o.k?'Exam '+o.k+', level '+o.l:'Level '+o.l;
+  $('groupTable').innerHTML='<table><thead><tr><th>#</th><th>Name</th><th class="num">Mastered</th><th class="num">Streak</th><th>Working on</th></tr></thead><tbody>'+
+    rows.map((o,i)=>'<tr><td>'+(i+1)+'</td><td>'+esc(o.n)+(o.n.toLowerCase()===U.name.toLowerCase()?' (you)':'')+'</td><td class="num">'+esc(o.m)+'/'+esc(o.t)+'</td><td class="num">'+esc(o.s)+'</td><td>'+esc(where(o))+'</td></tr>').join('')+
+    '</tbody></table><p class="small muted mt">Ranked by questions mastered across all three exams, then streak. Code dates: '+
+    rows.map(o=>esc(o.n)+' '+esc(o.d)).join(', ')+'.</p>'+
+    (function(){const t=troubleTally(rows);return t.length?'<h2 class="mt">Trouble topics in this group</h2><div class="chips">'+t.map(x=>'<span class="chip">'+esc(x.t)+': '+x.n+'</span>').join('')+'</div>':'';})();
+}
+function renderFlags(){
+  $('flagList').innerHTML=U.flags.length?'<ol>'+U.flags.map(id=>QBY[id]?'<li><b>'+esc(id)+'</b> '+esc(QBY[id].q)+'</li>':'').join('')+'</ol>':'<p class="muted">Nothing flagged. Use “Flag as wrong or confusing” after any question.</p>';
+}
+
+document.addEventListener('click',e=>{
+  const t=e.target.closest('button');if(!t)return;
+  if(t.id==='startName')return enter($('nameIn').value);
+  if(t.dataset.name)return enter(t.dataset.name);
+  if(t.dataset.topic){const k=t.dataset.topic,i=pickT.indexOf(k);if(i>=0)pickT.splice(i,1);else if(pickT.length<3)pickT.push(k);return renderTopics();}
+  if(t.id==='saveSurvey'){U.trouble=pickT.slice(0,3);U.troubleOther=$('otherIn').value.trim().slice(0,40);U.surveyDone=true;saveUser(U);return route();}
+  if(t.id==='redoSurvey')return survey();
+  if(t.id==='gNext'){if(G.step<GUIDE_STEPS)return guide(G.step+1,G.replay);return guideDone();}
+  if(t.id==='gBack')return guide(Math.max(1,G.step-1),G.replay);
+  if(t.id==='gSkip')return guideDone();
+  if(t.id==='replayGuide')return guide(1,true);
+  if(t.dataset.track){U.track=+t.dataset.track;saveUser(U);return needsPlacement()?placeIntro():home();}
+  if(t.id==='startPlace')return startSession('placement');
+  if(t.id==='skipPlace'){U.placed[TR()]=true;saveUser(U);return home();}
+  if(t.dataset.focus)return startSession('focus',+t.dataset.focus);
+  if(t.dataset.test)return startSession('testout',+t.dataset.test);
+  if(t.id==='go')return startSession(t.dataset.practice?'practice':'normal');
+  if(t.id==='quit'){if(S&&S.answered)finish();else{const m=S&&S.mode;S=null;if(m==='placement')placeIntro();else home();}return;}
+  if(t.id==='next')return next();
+  if(t.id==='sumHome'||t.hasAttribute('data-home'))return home();
+  if(t.id==='switchUser'){sset(KEY+'cur',null);U=null;return setup();}
+  if(t.id==='toShare'){$('shareCode').value=encodeShare(shareObj(U,Date.now()));$('copyMsg').textContent='';return show('share');}
+  if(t.id==='copyShare')return copyText($('shareCode').value,$('copyMsg'));
+  if(t.id==='toGroup'){$('groupIn').value='';$('groupMsg').textContent='';renderGroup();return show('group');}
+  if(t.id==='addCodes'){const inc=decodeCodes($('groupIn').value).filter(o=>o.n.toLowerCase()!==U.name.toLowerCase());
+    $('groupMsg').textContent=inc.length?inc.length+' code'+(inc.length===1?'':'s')+' added.':'No valid codes found. Codes start with AP1-.';
+    U.group=mergeGroup(U.group,inc);saveUser(U);$('groupIn').value='';return renderGroup();}
+  if(t.id==='toFlags'){renderFlags();$('flagMsg').textContent='';return show('flags');}
+  if(t.id==='copyFlags')return copyText(U.flags.map(id=>QBY[id]?id+': '+QBY[id].q:id).join('\n')||'No flagged questions.',$('flagMsg'));
+  if(t.id==='flagBtn'){const q=QBY[S.ids[S.i]];const k=U.flags.indexOf(q.id);
+    if(k>=0)U.flags.splice(k,1);else U.flags.push(q.id);saveUser(U);t.textContent=k>=0?'Flag as wrong or confusing':'Flagged';return;}
+  if(t.classList.contains('opt')&&S&&!t.disabled){
+    const q=QBY[S.ids[S.i]],k=+t.dataset.k,btns=[...document.querySelectorAll('#opts .opt')];
+    if(q.type==='order'){
+      const at=S.pick.indexOf(k);if(at>=0)S.pick.splice(at,1);else S.pick.push(k);
+      btns.forEach((b,j)=>{const p=S.pick.indexOf(j);b.classList.toggle('picked',p>=0);b.querySelector('.n').textContent=p>=0?p+1:'';});
+      $('checkOrder').disabled=S.pick.length!==q.items.length;return;
+    }
+    if(q.type==='multi'){const at=S.sel.indexOf(k);if(at>=0)S.sel.splice(at,1);else S.sel.push(k);
+      t.classList.toggle('picked',at<0);t.setAttribute('aria-pressed',at<0);$('checkMulti').disabled=!S.sel.length;return;}
+    const ok=S.map[k]===q.a;
+    btns.forEach((b,j)=>{b.disabled=true;if(S.map[j]===q.a)b.classList.add('right');});
+    if(!ok)t.classList.add('wrong');
+    return answer(ok,q);
+  }
+  if(t.id==='checkMulti'){
+    const q=QBY[S.ids[S.i]];const ok=checkMulti(q,S.sel.map(k=>S.map[k]));
+    document.querySelectorAll('#opts .opt').forEach((b,j)=>{b.disabled=true;const right=q.a.includes(S.map[j]),picked=S.sel.includes(j);
+      b.classList.remove('picked');if(right)b.classList.add('right');else if(picked)b.classList.add('wrong');});
+    t.remove();return answer(ok,q);
+  }
+  if(t.id==='checkMatch'){
+    const q=QBY[S.ids[S.i]];const sels=[...document.querySelectorAll('#mrows select')];const chosen=sels.map(x=>+x.value);const ok=checkMatch(chosen);
+    sels.forEach((x,i)=>{x.disabled=true;const row=x.closest('.mrow');const good=chosen[i]===i;row.classList.add(good?'right':'wrong');
+      if(!good)row.insertAdjacentHTML('beforeend','<span class="fix">Correct: '+esc(q.pairs[i][1])+'</span>');});
+    t.remove();return answer(ok,q);
+  }
+  if(t.id==='checkType'){
+    const q=QBY[S.ids[S.i]];const ti=$('typeIn');const r=checkTyped(q,ti.value);
+    S.typedNote=r.ok&&!r.exact?'Accepted, but check your spelling. Exams may count it wrong.':'';
+    ti.disabled=true;ti.style.borderColor=r.ok?'var(--myelin)':'var(--bad)';t.remove();return answer(r.ok,q);
+  }
+  if(t.id==='checkOrder'){
+    const q=QBY[S.ids[S.i]];const seq=S.pick.map(k=>S.ord[k]);const ok=isOrderRight(seq);
+    document.querySelectorAll('#opts .opt').forEach(b=>b.disabled=true);t.remove();
+    document.querySelectorAll('#opts .opt').forEach((b,j)=>{const p=S.pick.indexOf(j);b.classList.add(S.ord[j]===p?'right':'wrong');});
+    return answer(ok,q);
+  }
+});
+$('nameIn').addEventListener('keydown',e=>{if(e.key==='Enter')enter($('nameIn').value);});
+$('otherIn').addEventListener('input',()=>{$('saveSurvey').disabled=!(pickT.length||$('otherIn').value.trim());});
+const cur=sget(KEY+'cur');
+if(cur&&loadUser(cur)){U=loadUser(cur);route();}else setup();
+}
+</script>
+</body>
+</html>
