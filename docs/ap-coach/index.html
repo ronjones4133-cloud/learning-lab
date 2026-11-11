@@ -18,6 +18,7 @@
   --bg:#EEF2F6; --surface:#FFFFFF; --ink:#18203A; --muted:#5B6683; --line:#D5DCE6;
   --myelin:#0F7C7C; --myelin-soft:#D7EEEC; --signal:#E08A12; --signal-soft:#FCEBD2;
   --bad:#C2413B; --bad-soft:#F8DEDC; --lock:#A9B3C4; --orange:#D74100;
+  --session-button-text:#fff;
   color-scheme:light;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
@@ -25,11 +26,11 @@
 @media (prefers-color-scheme:dark){ :root:not([data-theme="light"]){
   --bg:#0F1528; --surface:#18203A; --ink:#E7ECF6; --muted:#9AA5BF; --line:#2B3657;
   --myelin:#3FBFB4; --myelin-soft:#173B42; --signal:#F2A73B; --signal-soft:#3D2E16;
-  --bad:#F07B72; --bad-soft:#40211F; --lock:#4A5574; --orange:#F76900; color-scheme:dark; }}
+  --bad:#F07B72; --bad-soft:#40211F; --lock:#4A5574; --orange:#F76900; --session-button-text:#0F1528; color-scheme:dark; }}
 :root[data-theme="dark"]{
   --bg:#0F1528; --surface:#18203A; --ink:#E7ECF6; --muted:#9AA5BF; --line:#2B3657;
   --myelin:#3FBFB4; --myelin-soft:#173B42; --signal:#F2A73B; --signal-soft:#3D2E16;
-  --bad:#F07B72; --bad-soft:#40211F; --lock:#4A5574; --orange:#F76900; color-scheme:dark; }
+  --bad:#F07B72; --bad-soft:#40211F; --lock:#4A5574; --orange:#F76900; --session-button-text:#0F1528; color-scheme:dark; }
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
 *,*::before,*::after{box-sizing:inherit}
 body{margin:0;background:var(--bg);color:var(--ink);
@@ -45,6 +46,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--signal);outline-offset:2px}
 .btn{display:block;width:100%;border:0;border-radius:14px;padding:15px 18px;font-weight:700;font-size:1.05rem;
   background:var(--myelin);color:#fff}
+#go{font-size:1.125rem;font-weight:800;margin:0 0 14px;color:var(--session-button-text)}
 .btn:disabled{opacity:.45;cursor:default}
 .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
 .row{display:flex;gap:10px}
@@ -125,7 +127,7 @@ header.top{display:flex;justify-content:space-between;align-items:baseline;gap:1
 .mrow.wrong select{border-color:var(--bad);background:var(--bad-soft)}
 .mrow .fix{font-size:.85rem;color:var(--myelin)}
 .opt.check .n{border-radius:6px}
-.unit-h{list-style:none;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:600;font-size:.95rem;color:var(--muted);padding:14px 2px 2px!important;border-bottom:0!important;display:block!important}
+.unit-h{list-style:none;font-family:"Bricolage Grotesque",system-ui,sans-serif;font-weight:800;font-size:1rem;color:var(--myelin);padding:18px 2px 4px!important;border-bottom:0!important;display:block!important}
 .feedback{margin-top:14px;padding:14px;border-radius:12px;background:var(--bg);border-left:5px solid var(--myelin)}
 .feedback.bad{border-left-color:var(--bad)}
 .feedback h2{font-size:1.05rem;margin-bottom:4px}
@@ -190,6 +192,7 @@ footer{margin-top:28px;font-size:.78rem;color:var(--muted)}
     <header class="top"><h1 class="brand">A&amp;P Coach</h1><span class="who" id="who"></span></header>
     <p class="tagline">Anatomy &amp; Physiology, one day at a time.</p>
     <div class="tracks" id="tracks" role="group" aria-label="Exam track"></div>
+    <button class="btn" id="go">START TODAY’S SESSION</button>
     <div class="streak">
       <div><b id="stStreak">0</b><span>day streak</span></div>
       <div><b id="stMastered">0</b><span>mastered</span></div>
@@ -199,7 +202,6 @@ footer{margin-top:28px;font-size:.78rem;color:var(--muted)}
     <div class="axon" aria-hidden="true"><svg id="axonSvg" viewBox="0 0 340 56"></svg>
       <p class="cap" id="axonCap"></p></div>
     <ul class="levels" id="levels"></ul>
-    <button class="btn" id="go">Start today’s session</button>
     <div class="links">
       <button class="link" id="toShare">Share my score</button>
       <button class="link" id="toGroup">Group standings</button>
@@ -964,7 +966,7 @@ function home(){
       (open?esc(Lv.d):'Opens at '+Math.round(UNLOCK*100)+'% on level '+(Lv.n-1))+'</div>'+(open?'<div class="bar"><i style="width:'+pct+'%"></i></div>':'')+
       act+'</div><span class="pct">'+(open?pct+'%':'')+'</span></li>';}).join('');
   const ids=buildSession(U,now,tr);
-  $('go').textContent=ids.length?'Start today’s '+TRACKS[tr-1].name+' session':'Practice anyway';
+  $('go').textContent=ids.length?'START TODAY’S SESSION':'Practice anyway';
   $('go').dataset.practice=ids.length?'':'1';
   show('home');
 }
