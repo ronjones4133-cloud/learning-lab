@@ -46,7 +46,12 @@ button{font:inherit;color:inherit;cursor:pointer}
 button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid var(--signal);outline-offset:2px}
 .btn{display:block;width:100%;border:0;border-radius:14px;padding:15px 18px;font-weight:700;font-size:1.05rem;
   background:var(--myelin);color:#fff}
-#go{font-size:1.125rem;font-weight:800;margin:0 0 14px;color:var(--session-button-text)}
+#go{font-size:1.125rem;font-weight:800;color:var(--session-button-text)}
+.eyebrow{font-size:.75rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--myelin);margin:0 0 4px}
+.welcome-copy{margin:8px 0 0}
+.next-step{margin:10px 0 14px;padding:12px;border:1px solid var(--myelin);border-radius:14px;background:var(--myelin-soft)}
+.next-step h2{font-weight:800;line-height:1.25}
+.next-step-copy{margin:4px 0 10px;font-size:.92rem;color:var(--muted)}
 .btn:disabled{opacity:.45;cursor:default}
 .btn.ghost{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
 .row{display:flex;gap:10px}
@@ -150,13 +155,14 @@ footer{margin-top:28px;font-size:.78rem;color:var(--muted)}
 
   <!-- setup -->
   <section id="v-setup" class="hidden">
+    <p class="eyebrow">A little practice, a lot of progress</p>
     <h1 class="brand">A&amp;P Coach</h1>
-    <p class="tagline">Anatomy &amp; Physiology, one day at a time.</p>
-    <p class="muted mt">Short daily practice, organized by lecture exam. Each exam track starts with the basics and builds level by level.</p>
+    <p class="muted welcome-copy">Anatomy &amp; Physiology, one day at a time. Choose your exam, then build understanding level by level with short practice sessions.</p>
+    <h2 class="mt">Let’s make this yours.</h2>
     <label for="nameIn" class="mt" style="display:block;font-weight:700">Your first name</label>
     <input type="text" id="nameIn" maxlength="24" autocomplete="given-name">
     <p class="small muted">Your progress stays on this device. Friends sharing a phone can each use their own name.</p>
-    <button class="btn mt" id="startName">Start</button>
+    <button class="btn mt" id="startName">Start learning</button>
     <div id="existing" class="mt"></div>
     <footer><p class="credit">Built by <a href="https://www.linkedin.com/in/ronjones4133" target="_blank" rel="noopener">Ron Jones</a></p><p>Not affiliated with Syracuse University.</p></footer>
   </section>
@@ -192,7 +198,11 @@ footer{margin-top:28px;font-size:.78rem;color:var(--muted)}
     <header class="top"><h1 class="brand">A&amp;P Coach</h1><span class="who" id="who"></span></header>
     <p class="tagline">Anatomy &amp; Physiology, one day at a time.</p>
     <div class="tracks" id="tracks" role="group" aria-label="Exam track"></div>
-    <button class="btn" id="go">START TODAY’S SESSION</button>
+    <section class="next-step" aria-labelledby="nextStepTitle">
+      <h2 id="nextStepTitle">Your next step</h2>
+      <p class="next-step-copy" id="nextStepCopy"></p>
+      <button class="btn" id="go" aria-describedby="nextStepCopy">START TODAY’S SESSION</button>
+    </section>
     <div class="streak">
       <div><b id="stStreak">0</b><span>day streak</span></div>
       <div><b id="stMastered">0</b><span>mastered</span></div>
@@ -966,6 +976,9 @@ function home(){
       (open?esc(Lv.d):'Opens at '+Math.round(UNLOCK*100)+'% on level '+(Lv.n-1))+'</div>'+(open?'<div class="bar"><i style="width:'+pct+'%"></i></div>':'')+
       act+'</div><span class="pct">'+(open?pct+'%':'')+'</span></li>';}).join('');
   const ids=buildSession(U,now,tr);
+  $('nextStepCopy').textContent=ids.length
+    ? 'Today’s session has '+ids.length+' question'+(ids.length===1?'':'s')+'.'
+    : 'You’re caught up. Take a practice round if you’d like.';
   $('go').textContent=ids.length?'START TODAY’S SESSION':'Practice anyway';
   $('go').dataset.practice=ids.length?'':'1';
   show('home');
